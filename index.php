@@ -43,7 +43,10 @@ class fancyBox extends Plugin {
 		// get conf
 		$conf = array(
 			'usemousewheel' => $this->settings->get('usemousewheel'),
+			'backgroundcolor' => $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha'),
 		);
+		// validate conf
+		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
 
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
@@ -86,19 +89,21 @@ class fancyBox extends Plugin {
 			$param_file = $param_img[1];
 			// build image path
 			$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
-			print_r($path_img);
 			// build single image tag
 			$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img);
 		}
 
 		// attach fancyBox
-		$syntax->insert_in_head('<script type="text/javascript">
-									$(document).ready(function() {
-										$(".fancybox").fancybox(
-											
-										);
-									});
-								</script>');
+		$fancyjs = '<script type="text/javascript">
+						$(document).ready(function() {
+							$(".fancybox").fancybox({';
+		// set background-color
+		if($conf['backgroundcolor'] != '') $fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } }';
+		
+		$fancyjs .=			'});
+						});
+					</script>';
+		$syntax->insert_in_head($fancyjs);
 
 		return $content;
 	}
@@ -111,18 +116,55 @@ class fancyBox extends Plugin {
 		// use mousewheel
 		$config['usemousewheel']  = array(
 			'type' => 'checkbox',
-			'description' => $this->admin_lang->getLanguageValue('config_usemousewheel')
+			'description' => $this->admin_lang->getLanguageValue('config_usemousewheel'),
 		);
 
-		// // text
-		// $config['text']  = array(
-		// 	'type' => 'text',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_text'),
-		// 	'maxlength' => '100',
-		// 	'size' => '5',
-		// 	'regex' => "/^[0-9]{1,2}$/",
-		// 	'regex_error' => $this->admin_lang->getLanguageValue('config_text_error')
-		// );
+		// background color red
+		$config['backgroundred']  = array(
+			'type' => 'text',
+			'description' => '',
+			'maxlength' => '100',
+			'size' => '3',
+			'regex' => "/^[0-9]{1,3}$/",
+			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundred_error'),
+		);
+		// background color green
+		$config['backgroundgreen']  = array(
+			'type' => 'text',
+			'description' => '',
+			'maxlength' => '100',
+			'size' => '3',
+			'regex' => "/^[0-9]{1,3}$/",
+			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundgreen_error'),
+		);
+		// background color blue
+		$config['backgroundblue']  = array(
+			'type' => 'text',
+			'description' => '',
+			'maxlength' => '100',
+			'size' => '3',
+			'regex' => "/^[0-9]{1,3}$/",
+			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundblue_error'),
+		);
+		// background color alpha
+		$config['backgroundalpha']  = array(
+			'type' => 'text',
+			'description' => $this->admin_lang->getLanguageValue('config_rgba'),
+			'maxlength' => '100',
+			'size' => '3',
+			// TODO regex for floating point
+			// 'regex' => "/^[0-9]{1,3}$/",
+			// 'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundalpha_error'),
+		);
+
+		// Template
+		$config['--template~~'] = '
+				<div class="mo-in-li-l">{usemousewheel_checkbox} {usemousewheel_description}</div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div class="mo-in-li-l">{backgroundred_text} {backgroundgreen_text} {backgroundblue_text} {backgroundalpha_text} {backgroundalpha_description}</div>
+				<div class="mo-in-li-r">
+		';
 
 		// // textarea
 		// $config['textarea']  = array(
