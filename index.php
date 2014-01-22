@@ -3,7 +3,7 @@
 /**
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
- * @version: v0.0.2014-01-21
+ * @version: v0.0.2014-01-xx
  * @license: GPL
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
@@ -47,7 +47,7 @@ class fancyBox extends Plugin {
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
 		// add mousewheel plugin (optional)
-		id($conf['usemousewheel'])
+		if($conf['usemousewheel'])
 			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
 		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
@@ -61,9 +61,19 @@ class fancyBox extends Plugin {
 		$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
 		$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
 
-		// build image tag
-		$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
-
+		// no image specified: load whole gallery
+		if ($param_img == '') {
+			$images = $this->gallery->get_GalleryImagesArray($param_gal);
+			// build image tag for every image
+			foreach ($images as $image) {
+				$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
+				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
+				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+			}
+		} else {
+			// build single image tag
+			$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+		}
 		// attach fancyBox
 		$syntax->insert_in_head('<script type="text/javascript">
 									$(document).ready(function() {
@@ -154,7 +164,7 @@ class fancyBox extends Plugin {
 
 		$info = array(
 			// plugin name and version
-			'<b>fancyBox</b> v0.0.2014-01-21',
+			'<b>fancyBox</b> v0.0.2014-01-xx',
 			// moziloCMS version
 			'2.0',
 			// short description, only <span> and <br /> are allowed
