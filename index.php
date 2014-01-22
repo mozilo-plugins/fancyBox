@@ -23,6 +23,7 @@ class fancyBox extends Plugin {
 
 		global $CMS_CONF;
 		global $syntax;
+		global $CatPage;
 
 		// initialize mozilo gallery
 		include_once($BASE_DIR . 'cms/' . 'GalleryClass.php');
@@ -36,8 +37,8 @@ class fancyBox extends Plugin {
 
 		// get params
 		$values = explode('|', $value);
-		$param_gal = $values[0];
-		$param_img = $values[1];
+		$param_gal = trim($values[0]);
+		$param_img = trim($values[1]);
 
 		// get conf
 		$conf = array(
@@ -57,23 +58,39 @@ class fancyBox extends Plugin {
 		$content = '';
 		$class = 'fancybox';
 
-		// build image paths
-		$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
-		$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
-
-		// no image specified: load whole gallery
-		if ($param_img == '') {
+		// gallery with no image specified: load whole gallery
+		if ($param_gal != '' and $param_img == '') {
 			$images = $this->gallery->get_GalleryImagesArray($param_gal);
 			// build image tag for every image
 			foreach ($images as $image) {
+				// build image paths
 				$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
 				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
 				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
 			}
-		} else {
+		}
+
+		// gallery with image specified: load single image from gallery
+		if ($param_gal != '' and $param_img != '') {
+			// build image paths
+			$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
+			$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
 			// build single image tag
 			$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
 		}
+
+		// no gallery but image specified: load single image from files
+		if ($param_gal == '' and $param_img != '') {
+			$param_img = explode('%3A', $param_img);
+			$param_cat = urlencode($param_img[0]);
+			$param_file = $param_img[1];
+			// build image path
+			$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
+			print_r($path_img);
+			// build single image tag
+			$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img);
+		}
+
 		// attach fancyBox
 		$syntax->insert_in_head('<script type="text/javascript">
 									$(document).ready(function() {
