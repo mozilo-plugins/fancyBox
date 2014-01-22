@@ -41,36 +41,35 @@ class fancyBox extends Plugin {
 
 		// get conf
 		$conf = array(
-			'text' => $this->settings->get('text'),
-			'textarea' => $this->settings->get('textarea'),
-			'password' => $this->settings->get('password'),
-			'check' => $this->settings->get('check'),
-			'radio' => $this->settings->get('radio'),
-			'select' => $this->settings->get('select')
+			'usemousewheel' => $this->settings->get('usemousewheel'),
 		);
 
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
-		// add mousewheel plugin
-		$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js"></script>');
+		// add mousewheel plugin (optional)
+		id($conf['usemousewheel'])
+			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
 		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
 		$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.pack.js"></script>');
 
-		// initialize return content
+		// initialize return content and default class
 		$content = '';
+		$class = 'fancybox';
 
-		// build images
+		// build image paths
 		$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
 		$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
 
-		$content .= '<a class="fancybox" rel="group" href="' . $path_img . '"><img src="' . $path_thumb . '" alt="" /></a>';
-
+		// build image tag
+		$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
 
 		// attach fancyBox
 		$syntax->insert_in_head('<script type="text/javascript">
 									$(document).ready(function() {
-										$(".fancybox").fancybox();
+										$(".fancybox").fancybox(
+											
+										);
 									});
 								</script>');
 
@@ -81,6 +80,12 @@ class fancyBox extends Plugin {
 	function getConfig() {
 
 		$config = array();
+
+		// use mousewheel
+		$config['usemousewheel']  = array(
+			'type' => 'checkbox',
+			'description' => $this->admin_lang->getLanguageValue('config_usemousewheel')
+		);
 
 		// // text
 		// $config['text']  = array(
@@ -113,11 +118,6 @@ class fancyBox extends Plugin {
 		// 	'saveasmd5' => true
 		// );
 
-		// // checkbox
-		// $config['checkbox']  = array(
-		// 	'type' => 'checkbox',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_checkbox')
-		// );
 
 		// // radio
 		// $config['radio']  = array(
@@ -170,6 +170,18 @@ class fancyBox extends Plugin {
 		);
 
 		return $info;
+	}
+
+
+	protected function buildImgTag($class, $rel, $href, $src) {
+		$html .= '<a ';
+		$html .= 	'class="' . $class . '" ';
+		$html .= 	'rel="' . $rel . '" ';
+		$html .= 	'href="' . $href . '" ';
+		$html .= '>';
+		$html .= 	'<img src="' . $src . '" alt="" />';
+		$html .= '</a>';
+		return $html;
 	}
 }
 
