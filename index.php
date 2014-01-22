@@ -44,6 +44,8 @@ class fancyBox extends Plugin {
 		$conf = array(
 			'usemousewheel' => $this->settings->get('usemousewheel'),
 			'backgroundcolor' => $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha'),
+			'padding' => $this->settings->get('padding'),
+			'margin' => $this->settings->get('margin'),
 		);
 		// validate conf
 		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
@@ -98,7 +100,11 @@ class fancyBox extends Plugin {
 						$(document).ready(function() {
 							$(".fancybox").fancybox({';
 		// set background-color
-		if($conf['backgroundcolor'] != '') $fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } }';
+		if($conf['backgroundcolor'] != '') $fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } },';
+		// set padding
+		if($conf['padding'] != '') $fancyjs .= 'padding : ' . $conf['padding'] . ',';
+		// set margin
+		if($conf['margin'] != '') $fancyjs .= 'margin : ' . $conf['margin'] . ',';
 		
 		$fancyjs .=			'});
 						});
@@ -157,13 +163,34 @@ class fancyBox extends Plugin {
 			// 'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundalpha_error'),
 		);
 
+		// padding
+		$config['padding']  = array(
+			'type' => 'text',
+			'description' => $this->admin_lang->getLanguageValue('config_padding'),
+			'maxlength' => '100',
+			'size' => '3',
+			'regex' => "/^[0-9]{1,3}$/",
+			'regex_error' => $this->admin_lang->getLanguageValue('config_padding_error'),
+		);
+		// margin
+		$config['margin']  = array(
+			'type' => 'text',
+			'description' => $this->admin_lang->getLanguageValue('config_margin'),
+			'maxlength' => '100',
+			'size' => '3',
+			'regex' => "/^[0-9]{1,3}$/",
+			'regex_error' => $this->admin_lang->getLanguageValue('config_margin_error'),
+		);
+
 		// Template
 		$config['--template~~'] = '
 				<div class="mo-in-li-l">{usemousewheel_checkbox} {usemousewheel_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div class="mo-in-li-l">{backgroundred_text} {backgroundgreen_text} {backgroundblue_text} {backgroundalpha_text} {backgroundalpha_description}</div>
-				<div class="mo-in-li-r">
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div class="mo-in-li-l"><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}
 		';
 
 		// // textarea
