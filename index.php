@@ -46,6 +46,12 @@ class fancyBox extends Plugin {
 			'backgroundcolor' => $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha'),
 			'padding' => $this->settings->get('padding'),
 			'margin' => $this->settings->get('margin'),
+			'width' => $this->settings->get('width'),
+			'height' => $this->settings->get('height'),
+			'minwidth' => $this->settings->get('minwidth'),
+			'minheight' => $this->settings->get('minheight'),
+			'maxwidth' => $this->settings->get('maxwidth'),
+			'maxheight' => $this->settings->get('maxheight'),
 		);
 		// validate conf
 		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
@@ -105,6 +111,18 @@ class fancyBox extends Plugin {
 		if($conf['padding'] != '') $fancyjs .= 'padding : ' . $conf['padding'] . ',';
 		// set margin
 		if($conf['margin'] != '') $fancyjs .= 'margin : ' . $conf['margin'] . ',';
+		// set width
+		if($conf['width'] != '') $fancyjs .= 'width : ' . $conf['width'] . ',';
+		// set height
+		if($conf['height'] != '') $fancyjs .= 'height : ' . $conf['height'] . ',';
+		// set minwidth
+		if($conf['minwidth'] != '') $fancyjs .= 'minWidth : ' . $conf['minwidth'] . ',';
+		// set minheight
+		if($conf['minheight'] != '') $fancyjs .= 'minHeight : ' . $conf['minheight'] . ',';
+		// set maxwidth
+		if($conf['maxwidth'] != '') $fancyjs .= 'maxWidth : ' . $conf['maxwidth'] . ',';
+		// set maxheight
+		if($conf['maxheight'] != '') $fancyjs .= 'maxHeight : ' . $conf['maxheight'] . ',';
 		
 		$fancyjs .=			'});
 						});
@@ -120,77 +138,49 @@ class fancyBox extends Plugin {
 		$config = array();
 
 		// use mousewheel
-		$config['usemousewheel']  = array(
-			'type' => 'checkbox',
-			'description' => $this->admin_lang->getLanguageValue('config_usemousewheel'),
-		);
+		$config['usemousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_usemousewheel'));
 
 		// background color red
-		$config['backgroundred']  = array(
-			'type' => 'text',
-			'description' => '',
-			'maxlength' => '100',
-			'size' => '3',
-			'regex' => "/^[0-9]{1,3}$/",
-			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundred_error'),
-		);
+		$config['backgroundred'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundred_error'));
 		// background color green
-		$config['backgroundgreen']  = array(
-			'type' => 'text',
-			'description' => '',
-			'maxlength' => '100',
-			'size' => '3',
-			'regex' => "/^[0-9]{1,3}$/",
-			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundgreen_error'),
-		);
+		$config['backgroundgreen'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundgreen_error'));
 		// background color blue
-		$config['backgroundblue']  = array(
-			'type' => 'text',
-			'description' => '',
-			'maxlength' => '100',
-			'size' => '3',
-			'regex' => "/^[0-9]{1,3}$/",
-			'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundblue_error'),
-		);
+		$config['backgroundblue'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundblue_error'));
 		// background color alpha
-		$config['backgroundalpha']  = array(
-			'type' => 'text',
-			'description' => $this->admin_lang->getLanguageValue('config_rgba'),
-			'maxlength' => '100',
-			'size' => '3',
-			// TODO regex for floating point
-			// 'regex' => "/^[0-9]{1,3}$/",
-			// 'regex_error' => $this->admin_lang->getLanguageValue('config_backgroundalpha_error'),
-		);
+		$config['backgroundalpha'] = $this->confText($this->admin_lang->getLanguageValue('config_rgba'), '100', '3'); // TODO regex for floating point
 
 		// padding
-		$config['padding']  = array(
-			'type' => 'text',
-			'description' => $this->admin_lang->getLanguageValue('config_padding'),
-			'maxlength' => '100',
-			'size' => '3',
-			'regex' => "/^[0-9]{1,3}$/",
-			'regex_error' => $this->admin_lang->getLanguageValue('config_padding_error'),
-		);
+		$config['padding'] = $this->confText($this->admin_lang->getLanguageValue('config_padding'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_padding_error'));
 		// margin
-		$config['margin']  = array(
-			'type' => 'text',
-			'description' => $this->admin_lang->getLanguageValue('config_margin'),
-			'maxlength' => '100',
-			'size' => '3',
-			'regex' => "/^[0-9]{1,3}$/",
-			'regex_error' => $this->admin_lang->getLanguageValue('config_margin_error'),
-		);
+		$config['margin'] = $this->confText($this->admin_lang->getLanguageValue('config_margin'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_margin_error'));
+
+		// width
+		$config['width'] = $this->confText($this->admin_lang->getLanguageValue('config_width'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_width_error'));
+		// height
+		$config['height'] = $this->confText($this->admin_lang->getLanguageValue('config_height'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_height_error'));
+		// minwidth
+		$config['minwidth'] = $this->confText($this->admin_lang->getLanguageValue('config_minwidth'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_minwidth_error'));
+		// minheight
+		$config['minheight'] = $this->confText($this->admin_lang->getLanguageValue('config_minheight'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_minheight_error'));
+		// maxwidth
+		$config['maxwidth'] = $this->confText($this->admin_lang->getLanguageValue('config_maxwidth'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_maxwidth_error'));
+		// maxheight
+		$config['maxheight'] = $this->confText($this->admin_lang->getLanguageValue('config_maxheight'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_maxheight_error'));
 
 		// Template
 		$config['--template~~'] = '
-				<div class="mo-in-li-l">{usemousewheel_checkbox} {usemousewheel_description}</div>
+				<div>{usemousewheel_checkbox} {usemousewheel_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div class="mo-in-li-l">{backgroundred_text} {backgroundgreen_text} {backgroundblue_text} {backgroundalpha_text} {backgroundalpha_description}</div>
+				<div><div style="margin-bottom:5px;">{backgroundalpha_description}</div>R {backgroundred_text} &nbsp; G {backgroundgreen_text} &nbsp; B {backgroundblue_text} &nbsp; &alpha; {backgroundalpha_text}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div class="mo-in-li-l"><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}
+				<div><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}</div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{width_text} {width_description}</div>{height_text} {height_description}</div>
+				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{minwidth_text} {minwidth_description}</div>{minheight_text} {minheight_description}</div>
+				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}
 		';
 
 		// // textarea
@@ -278,6 +268,28 @@ class fancyBox extends Plugin {
 		$html .= 	'<img src="' . $src . '" alt="" />';
 		$html .= '</a>';
 		return $html;
+	}
+
+	protected function confCheck($description) {
+		// required properties
+		return array(
+			'type' => 'checkbox',
+			'description' => $description,
+		);
+	}
+
+	protected function confText($description, $maxlength='', $size='', $regex='', $regex_error='') {
+		// required properties
+		$conftext = array(
+			'type' => 'text',
+			'description' => $description,
+		);
+		// optional properties
+		if ($maxlength != '') $conftext['maxlength'] = $maxlength;
+		if ($size != '') $conftext['size'] = $size;
+		if ($regex != '') $conftext['regex'] = $regex;
+		if ($regex_error != '') $conftext['regex_error'] = $regex_error;
+		return $conftext;
 	}
 }
 
