@@ -62,6 +62,10 @@ class fancyBox extends Plugin {
 			'closeclick' => $this->settings->get('closeclick'),
 			'nextclick' => $this->settings->get('nextclick'),
 			'usemousewheel' => $this->settings->get('usemousewheel'),
+			'autoplay' => $this->settings->get('autoplay'),
+			'playspeed' => $this->settings->get('playspeed'),
+			'preload' => $this->settings->get('preload'),
+			'loop' => $this->settings->get('loop'),
 		);
 		// validate conf
 		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
@@ -158,6 +162,15 @@ class fancyBox extends Plugin {
 		// set nextclick
 		if($conf['nextclick'] != '') $fancyjs .= 'nextClick : ' . $conf['nextclick'] . ',';
 
+		// set autoplay
+		if($conf['autoplay'] != '') $fancyjs .= 'autoPlay : ' . $conf['autoplay'] . ',';
+		// set playspeed
+		if($conf['playspeed'] != '') $fancyjs .= 'playSpeed : ' . $conf['playspeed'] . ',';
+		// set preload
+		if($conf['preload'] != '') $fancyjs .= 'preload : ' . $conf['preload'] . ',';
+		// set loop
+		if($conf['loop'] != '') $fancyjs .= 'loop : ' . $conf['loop'] . ',';
+
 		$fancyjs .=			'});
 						});
 					</script>';
@@ -230,6 +243,15 @@ class fancyBox extends Plugin {
 		// use mousewheel
 		$config['usemousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_usemousewheel'));
 
+		// set autoplay
+		$config['autoplay'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autoplay'));
+		// set playspeed
+		$config['playspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_playspeed'), '100', '3', "/^[0-9]{1,5}$/", $this->admin_lang->getLanguageValue('config_playspeed_error'));
+		// set preload
+		$config['preload'] = $this->confText($this->admin_lang->getLanguageValue('config_preload'), '100', '3', "/^[0-9]{1,2}$/", $this->admin_lang->getLanguageValue('config_preload_error'));
+		// set loop
+		$config['loop'] = $this->confCheck($this->admin_lang->getLanguageValue('config_loop'));
+
 		// Template
 		$config['--template~~'] = '
 				<div><div style="margin-bottom:5px;">{backgroundalpha_description}</div>{backgroundred_text} R &nbsp; &nbsp; {backgroundgreen_text} G &nbsp; &nbsp; {backgroundblue_text} B &nbsp; &nbsp; {backgroundalpha_text} Alpha</div>
@@ -262,6 +284,13 @@ class fancyBox extends Plugin {
 					<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
 					<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
 					<div style="margin-bottom:5px;">{usemousewheel_checkbox} {usemousewheel_description}</div>
+				</div>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div>
+					<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description}</div>
+					<div style="margin-bottom:5px;">{loop_checkbox} {loop_description}</div>
+					<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description}</div>
+					<div style="margin-bottom:5px;">{preload_text} {preload_description}</div>
 		';
 
 		// // textarea
