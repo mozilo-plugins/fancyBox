@@ -42,7 +42,6 @@ class fancyBox extends Plugin {
 
 		// get conf
 		$conf = array(
-			'usemousewheel' => $this->settings->get('usemousewheel'),
 			'backgroundcolor' => $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha'),
 			'padding' => $this->settings->get('padding'),
 			'margin' => $this->settings->get('margin'),
@@ -57,6 +56,12 @@ class fancyBox extends Plugin {
 			'autocenter' => $this->settings->get('autocenter'),
 			'fittoview' => $this->settings->get('fittoview'),
 			'scrolling' => $this->settings->get('scrolling'),
+			'wrapcss' => $this->settings->get('wrapcss'),
+			'arrows' => $this->settings->get('arrows'),
+			'closebtn' => $this->settings->get('closebtn'),
+			'closeclick' => $this->settings->get('closeclick'),
+			'nextclick' => $this->settings->get('nextclick'),
+			'usemousewheel' => $this->settings->get('usemousewheel'),
 		);
 		// validate conf
 		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
@@ -140,7 +145,19 @@ class fancyBox extends Plugin {
 
 		// select scrolling
 		if($conf['scrolling'] != '') $fancyjs .= 'scrolling : "' . $conf['scrolling'] . '",';
-		
+
+		// define wrapcss
+		if($conf['wrapcss'] != '') $fancyjs .= 'wrapCSS : "' . $conf['wrapcss'] . '",';
+
+		// set arrows
+		if($conf['arrows'] != '') $fancyjs .= 'arrows : ' . $conf['arrows'] . ',';
+		// set closebtn
+		if($conf['closebtn'] != '') $fancyjs .= 'closeBtn : ' . $conf['closebtn'] . ',';
+		// set closeclick
+		if($conf['closeclick'] != '') $fancyjs .= 'closeClick : ' . $conf['closeclick'] . ',';
+		// set nextclick
+		if($conf['nextclick'] != '') $fancyjs .= 'nextClick : ' . $conf['nextclick'] . ',';
+
 		$fancyjs .=			'});
 						});
 					</script>';
@@ -153,9 +170,6 @@ class fancyBox extends Plugin {
 	function getConfig() {
 
 		$config = array();
-
-		// use mousewheel
-		$config['usemousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_usemousewheel'));
 
 		// background color red
 		$config['backgroundred'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundred_error'));
@@ -202,12 +216,23 @@ class fancyBox extends Plugin {
 		);
 		$config['scrolling'] = $this->confSelect($this->admin_lang->getLanguageValue('config_scrolling'), $descriptions, false);
 
+		// set wrapcss
+		$config['wrapcss'] = $this->confText($this->admin_lang->getLanguageValue('config_wrapcss'));
+
+		// set arrows
+		$config['arrows'] = $this->confCheck($this->admin_lang->getLanguageValue('config_arrows'));
+		// set closebtn
+		$config['closebtn'] = $this->confCheck($this->admin_lang->getLanguageValue('config_closebtn'));
+		// set closeclick
+		$config['closeclick'] = $this->confCheck($this->admin_lang->getLanguageValue('config_closeclick'));
+		// set nextclick
+		$config['nextclick'] = $this->confCheck($this->admin_lang->getLanguageValue('config_nextclick'));
+		// use mousewheel
+		$config['usemousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_usemousewheel'));
+
 		// Template
 		$config['--template~~'] = '
-				<div>{usemousewheel_checkbox} {usemousewheel_description}</div>
-			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div><div style="margin-bottom:5px;">{backgroundalpha_description}</div>R {backgroundred_text} &nbsp; G {backgroundgreen_text} &nbsp; B {backgroundblue_text} &nbsp; &alpha; {backgroundalpha_text}</div>
+				<div><div style="margin-bottom:5px;">{backgroundalpha_description}</div>{backgroundred_text} R &nbsp; &nbsp; {backgroundgreen_text} G &nbsp; &nbsp; {backgroundblue_text} B &nbsp; &nbsp; {backgroundalpha_text} Alpha</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}</div>
@@ -226,7 +251,17 @@ class fancyBox extends Plugin {
 				</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div><div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}
+				<div><div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}</div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div><div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}</div>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div>
+					<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description}</div>
+					<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description}</div>
+					<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
+					<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
+					<div style="margin-bottom:5px;">{usemousewheel_checkbox} {usemousewheel_description}</div>
 		';
 
 		// // textarea
