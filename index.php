@@ -52,6 +52,11 @@ class fancyBox extends Plugin {
 			'minheight' => $this->settings->get('minheight'),
 			'maxwidth' => $this->settings->get('maxwidth'),
 			'maxheight' => $this->settings->get('maxheight'),
+			'autosize' => $this->settings->get('autosize'),
+			'autoresize' => $this->settings->get('autoresize'),
+			'autocenter' => $this->settings->get('autocenter'),
+			'fittoview' => $this->settings->get('fittoview'),
+			'scrolling' => $this->settings->get('scrolling'),
 		);
 		// validate conf
 		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
@@ -123,6 +128,18 @@ class fancyBox extends Plugin {
 		if($conf['maxwidth'] != '') $fancyjs .= 'maxWidth : ' . $conf['maxwidth'] . ',';
 		// set maxheight
 		if($conf['maxheight'] != '') $fancyjs .= 'maxHeight : ' . $conf['maxheight'] . ',';
+
+		// set autosize
+		if($conf['autosize'] != '') $fancyjs .= 'autoSize : ' . $conf['autosize'] . ',';
+		// set autoresize
+		if($conf['autoresize'] != '') $fancyjs .= 'autoReSize : ' . $conf['autoresize'] . ',';
+		// set autocenter
+		if($conf['autocenter'] != '') $fancyjs .= 'autoCenter : ' . $conf['autocenter'] . ',';
+		// set fittoview
+		if($conf['fittoview'] != '') $fancyjs .= 'fitToView : ' . $conf['fittoview'] . ',';
+
+		// select scrolling
+		if($conf['scrolling'] != '') $fancyjs .= 'scrolling : "' . $conf['scrolling'] . '",';
 		
 		$fancyjs .=			'});
 						});
@@ -167,6 +184,24 @@ class fancyBox extends Plugin {
 		// maxheight
 		$config['maxheight'] = $this->confText($this->admin_lang->getLanguageValue('config_maxheight'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_maxheight_error'));
 
+		// set autosize
+		$config['autosize'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autosize'));
+		// set autoresize
+		$config['autoresize'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autoresize'));
+		// set autocenter
+		$config['autocenter'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autocenter'));
+		// set fittoview
+		$config['fittoview'] = $this->confCheck($this->admin_lang->getLanguageValue('config_fittoview'));
+
+		// select scrolling
+		$descriptions = array(
+			'auto' => $this->admin_lang->getLanguageValue('config_scrolling_auto'),
+			'yes' => $this->admin_lang->getLanguageValue('config_scrolling_yes'),
+			'no' => $this->admin_lang->getLanguageValue('config_scrolling_no'),
+			'visible' => $this->admin_lang->getLanguageValue('config_scrolling_visible')
+		);
+		$config['scrolling'] = $this->confSelect($this->admin_lang->getLanguageValue('config_scrolling'), $descriptions, false);
+
 		// Template
 		$config['--template~~'] = '
 				<div>{usemousewheel_checkbox} {usemousewheel_description}</div>
@@ -180,7 +215,18 @@ class fancyBox extends Plugin {
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{width_text} {width_description}</div>{height_text} {height_description}</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{minwidth_text} {minwidth_description}</div>{minheight_text} {minheight_description}</div>
-				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}
+				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}</div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div>
+					<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description}</div>
+					<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description}</div>
+					<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description}</div>
+					<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description}</div>
+				</div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div><div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}
 		';
 
 		// // textarea
@@ -214,18 +260,6 @@ class fancyBox extends Plugin {
 		// 		'rot' => 'Rot',
 		// 		'gruen' => 'Grün'
 		// 	)
-		// );
-
-		// // select
-		// $config['select']  = array(
-		// 	'type' => 'select',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_select'),
-		// 	'descriptions' => array(
-		// 		'blau' => 'Blau',
-		// 		'rot' => 'Rot',
-		// 		'gruen' => 'Grün'
-		// 	),
-		// 	'multiple' => false
 		// );
 
 		return $config;
@@ -291,6 +325,17 @@ class fancyBox extends Plugin {
 		if ($regex_error != '') $conftext['regex_error'] = $regex_error;
 		return $conftext;
 	}
+
+	protected function confSelect($description, $descriptions, $multiple=false) {
+		// required properties
+		return array(
+			'type' => 'select',
+			'description' => $description,
+			'descriptions' => $descriptions,
+			'multiple' => $multiple,
+		);
+	}
+
 }
 
 ?>
