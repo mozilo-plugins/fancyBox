@@ -41,57 +41,69 @@ class fancyBox extends Plugin {
 		$param_img = trim($values[1]);
 
 		// set configuration elements and their default values
+		// element => default, toquote, wrap
+		// wrap: # -> key, | -> value
 		$confelements = array(
-			'backgroundred'		=> '0',
-			'backgroundgreen'	=> '0',
-			'backgroundblue'	=> '0',
-			'backgroundalpha'	=> '0.5',
-			'padding'			=> '15',
-			'margin'			=> '20',
-			'width'				=> '800',
-			'height'			=> '600',
-			'minwidth'			=> '100',
-			'minheight'			=> '100',
-			'maxwidth'			=> '9999',
-			'maxheight'			=> '9999',
-			'autosize'			=> 'true',
-			'autoresize'		=> '!isTouch',
-			'autocenter'		=> '!isTouch',
-			'fittoview'			=> 'true',
-			'scrolling'			=> 'auto',
-			'wrapcss'			=> '',
-			'arrows'			=> 'true',
-			'closebtn'			=> 'true',
-			'closeclick'		=> 'false',
-			'nextclick'			=> 'false',
-			'mousewheel'		=> 'true',
-			'autoplay'			=> 'false',
-			'playspeed'			=> '3000',
-			'preload'			=> '3',
-			'loop'				=> 'true',
-			'openeffect'		=> 'fade',
-			'closeeffect'		=> 'fade',
-			'nexteffect'		=> 'elastic',
-			'preveffect'		=> 'elastic',
-			'openspeed'			=> '250',
-			'closespeed'		=> '250',
-			'nextspeed'			=> '250',
-			'prevspeed'			=> '250',
+			'backgroundred'		=> array('0',false,''),
+			'backgroundgreen'	=> array('0',false,''),
+			'backgroundblue'	=> array('0',false,''),
+			'backgroundalpha'	=> array('0.5',false,''),
+			'padding'			=> array('15',false,'# : |,'),
+			'margin'			=> array('20',false,'# : |,'),
+			'width'				=> array('800',false,'# : |,'),
+			'height'			=> array('600',false,'# : |,'),
+			'minwidth'			=> array('100',false,'# : |,'),
+			'minheight'			=> array('100',false,'# : |,'),
+			'maxwidth'			=> array('9999',false,'# : |,'),
+			'maxheight'			=> array('9999',false,'# : |,'),
+			'autosize'			=> array('true',false,'# : |,'),
+			'autoresize'		=> array('!isTouch',false,'# : |,'),
+			'autocenter'		=> array('!isTouch',false,'# : |,'),
+			'fittoview'			=> array('true',false,'# : |,'),
+			'scrolling'			=> array('auto',true,'# : |,'),
+			'wrapcss'			=> array('',true,'# : |,'),
+			'arrows'			=> array('true',false,'# : |,'),
+			'closebtn'			=> array('true',false,'# : |,'),
+			'closeclick'		=> array('false',false,'# : |,'),
+			'nextclick'			=> array('false',false,'# : |,'),
+			'mousewheel'		=> array('true',false,'# : |,'),
+			'autoplay'			=> array('false',false,'# : |,'),
+			'playspeed'			=> array('3000',false,'# : |,'),
+			'preload'			=> array('3',false,'# : |,'),
+			'loop'				=> array('true',false,'# : |,'),
+			'openeffect'		=> array('fade',true,'# : |,'),
+			'closeeffect'		=> array('fade',true,'# : |,'),
+			'nexteffect'		=> array('elastic',true,'# : |,'),
+			'preveffect'		=> array('elastic',true,'# : |,'),
+			'openspeed'			=> array('250',false,'# : |,'),
+			'closespeed'		=> array('250',false,'# : |,'),
+			'nextspeed'			=> array('250',false,'# : |,'),
+			'prevspeed'			=> array('250',false,'# : |,'),
 		);
 
 		// get conf and set default
 		$conf = array();
 		foreach ($confelements as $elem => $default) {
-			$conf[$elem] = ($this->settings->get($elem) == '') ? $default : $this->settings->get($elem);
+			$conf[$elem] = array(($this->settings->get($elem) == '') ? $default[0] : $this->settings->get($elem),$default[1],$default[2]);
 		}
 
 		// validate conf
-		$conf['backgroundcolor'] = $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha');
+		$conf['backgroundcolor'] = array(
+			$this->settings->get('backgroundred') . ', ' . 
+			$this->settings->get('backgroundgreen') . ', ' . 
+			$this->settings->get('backgroundblue') . ', ' . 
+			$this->settings->get('backgroundalpha'),
+			false,
+			'helpers : { overlay : { css : { "background" : "rgba(|)" } } },',
+		);
+
+		// delete partial conf elements, contents are now in 'backgroundcolor'
+		unset($conf['backgroundred'], $conf['backgroundgreen'], $conf['backgroundblue'], $conf['backgroundalpha']);
 
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
 		// add mousewheel plugin (optional)
-		if($conf['mousewheel'] == 'true')
+		if($conf['mousewheel'][0] == 'true')
 			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
 		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
@@ -136,75 +148,9 @@ class fancyBox extends Plugin {
 		// attach fancyBox
 		$fancyjs = '<!-- initialize fancyBox plugin: --> ';
 		$fancyjs .= '<script type="text/javascript"> $(document).ready(function() { $(".fancybox").fancybox({';
-		// set background-color
-		$fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } },';
-		// set padding
-		$fancyjs .= 'padding : ' . $conf['padding'] . ',';
-		// set margin
-		$fancyjs .= 'margin : ' . $conf['margin'] . ',';
-		// set width
-		$fancyjs .= 'width : ' . $conf['width'] . ',';
-		// set height
-		$fancyjs .= 'height : ' . $conf['height'] . ',';
-		// set minwidth
-		$fancyjs .= 'minWidth : ' . $conf['minwidth'] . ',';
-		// set minheight
-		$fancyjs .= 'minHeight : ' . $conf['minheight'] . ',';
-		// set maxwidth
-		$fancyjs .= 'maxWidth : ' . $conf['maxwidth'] . ',';
-		// set maxheight
-		$fancyjs .= 'maxHeight : ' . $conf['maxheight'] . ',';
 
-		// set autosize
-		$fancyjs .= 'autoSize : ' . $conf['autosize'] . ',';
-		// set autoresize
-		$fancyjs .= 'autoReSize : ' . $conf['autoresize'] . ',';
-		// set autocenter
-		$fancyjs .= 'autoCenter : ' . $conf['autocenter'] . ',';
-		// set fittoview
-		$fancyjs .= 'fitToView : ' . $conf['fittoview'] . ',';
-
-		// select scrolling
-		$fancyjs .= 'scrolling : "' . $conf['scrolling'] . '",';
-
-		// define wrapcss
-		$fancyjs .= 'wrapCSS : "' . $conf['wrapcss'] . '",';
-
-		// set arrows
-		$fancyjs .= 'arrows : ' . $conf['arrows'] . ',';
-		// set closebtn
-		$fancyjs .= 'closeBtn : ' . $conf['closebtn'] . ',';
-		// set closeclick
-		$fancyjs .= 'closeClick : ' . $conf['closeclick'] . ',';
-		// set nextclick
-		$fancyjs .= 'nextClick : ' . $conf['nextclick'] . ',';
-
-		// set autoplay
-		$fancyjs .= 'autoPlay : ' . $conf['autoplay'] . ',';
-		// set playspeed
-		$fancyjs .= 'playSpeed : ' . $conf['playspeed'] . ',';
-		// set preload
-		$fancyjs .= 'preload : ' . $conf['preload'] . ',';
-		// set loop
-		$fancyjs .= 'loop : ' . $conf['loop'] . ',';
-
-		// set openeffect
-		$fancyjs .= 'openEffect : "' . $conf['openeffect'] . '",';
-		// set openeffect
-		$fancyjs .= 'closeEffect : "' . $conf['closeeffect'] . '",';
-		// set openeffect
-		$fancyjs .= 'nextEffect : "' . $conf['nexteffect'] . '",';
-		// set openeffect
-		$fancyjs .= 'prevEffect : "' . $conf['preveffect'] . '",';
-
-		// set openspeed
-		$fancyjs .= 'openSpeed : ' . $conf['openspeed'] . ',';
-		// set closespeed
-		$fancyjs .= 'closeSpeed : ' . $conf['closespeed'] . ',';
-		// set nextspeed
-		$fancyjs .= 'nextSpeed : ' . $conf['nextspeed'] . ',';
-		// set prevspeed
-		$fancyjs .= 'prevSpeed : ' . $conf['prevspeed'] . ',';
+		foreach ($conf as $key => $value)
+			$fancyjs .= $this->wrap($key, $value[0], $value[1], $value[2]);
 
 		$fancyjs .=	'});});</script>';
 		$syntax->insert_in_head($fancyjs);
@@ -461,6 +407,12 @@ class fancyBox extends Plugin {
 			'descriptions' => $descriptions,
 			'multiple' => $multiple,
 		);
+	}
+
+	protected function wrap($key, $value, $toquote, $wrap) {
+		if ($toquote) $value = '"' . $value . '"';
+		$wrapped = str_replace(array('#','|'), array($key, $value), $wrap);
+		return $wrapped;
 	}
 
 }
