@@ -33,7 +33,7 @@ class fancyBox extends Plugin {
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
 		// get language labels
-		$label = $this->cms_lang->getLanguageValue('label');
+		// $label = $this->cms_lang->getLanguageValue('label');
 
 		// get params
 		$values = explode('|', $value);
@@ -91,7 +91,7 @@ class fancyBox extends Plugin {
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
 		// add mousewheel plugin (optional)
-		if($conf['mousewheel'])
+		if($conf['mousewheel'] == 'true')
 			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
 		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
@@ -219,13 +219,13 @@ class fancyBox extends Plugin {
 		$config = array();
 
 		// background color red
-		$config['backgroundred'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundred_error'));
+		$config['backgroundred'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundred'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundred_error'));
 		// background color green
-		$config['backgroundgreen'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundgreen_error'));
+		$config['backgroundgreen'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundgreen'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundgreen_error'));
 		// background color blue
-		$config['backgroundblue'] = $this->confText('', '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundblue_error'));
+		$config['backgroundblue'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundblue'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundblue_error'));
 		// background color alpha
-		$config['backgroundalpha'] = $this->confText($this->admin_lang->getLanguageValue('config_rgba'), '100', '3'); // TODO regex for floating point
+		$config['backgroundalpha'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundalpha'), '100', '3'); // TODO regex for floating point
 
 		// padding
 		$config['padding'] = $this->confText($this->admin_lang->getLanguageValue('config_padding'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_padding_error'));
@@ -292,9 +292,13 @@ class fancyBox extends Plugin {
 			'elastic' => $this->admin_lang->getLanguageValue('config_effect_elastic'),
 			'none' => $this->admin_lang->getLanguageValue('config_effect_none'),
 		);
+		// set openeffect
 		$config['openeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_openeffect'), $descriptions, false);
+		// set closeeffect
 		$config['closeeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_closeeffect'), $descriptions, false);
+		// set nexteffect
 		$config['nexteffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_nexteffect'), $descriptions, false);
+		// set preveffect
 		$config['preveffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_preveffect'), $descriptions, false);
 
 		// set openspeed
@@ -308,7 +312,7 @@ class fancyBox extends Plugin {
 
 		// Template
 		$config['--template~~'] = '
-				<div><div style="margin-bottom:5px;">{backgroundalpha_description}</div>{backgroundred_text} R &nbsp; &nbsp; {backgroundgreen_text} G &nbsp; &nbsp; {backgroundblue_text} B &nbsp; &nbsp; {backgroundalpha_text} Alpha</div>
+				<div><div style="margin-bottom:5px;">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>{backgroundred_text} {backgroundred_description} &nbsp; &nbsp; {backgroundgreen_text} {backgroundgreen_description} &nbsp; &nbsp; {backgroundblue_text} {backgroundblue_description} &nbsp; &nbsp; {backgroundalpha_text} {backgroundalpha_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}</div>
