@@ -40,47 +40,65 @@ class fancyBox extends Plugin {
 		$param_gal = trim($values[0]);
 		$param_img = trim($values[1]);
 
-		// get conf
-		$conf = array(
-			'backgroundcolor' => $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha'),
-			'padding' => $this->settings->get('padding'),
-			'margin' => $this->settings->get('margin'),
-			'width' => $this->settings->get('width'),
-			'height' => $this->settings->get('height'),
-			'minwidth' => $this->settings->get('minwidth'),
-			'minheight' => $this->settings->get('minheight'),
-			'maxwidth' => $this->settings->get('maxwidth'),
-			'maxheight' => $this->settings->get('maxheight'),
-			'autosize' => $this->settings->get('autosize'),
-			'autoresize' => $this->settings->get('autoresize'),
-			'autocenter' => $this->settings->get('autocenter'),
-			'fittoview' => $this->settings->get('fittoview'),
-			'scrolling' => $this->settings->get('scrolling'),
-			'wrapcss' => $this->settings->get('wrapcss'),
-			'arrows' => $this->settings->get('arrows'),
-			'closebtn' => $this->settings->get('closebtn'),
-			'closeclick' => $this->settings->get('closeclick'),
-			'nextclick' => $this->settings->get('nextclick'),
-			'usemousewheel' => $this->settings->get('usemousewheel'),
-			'autoplay' => $this->settings->get('autoplay'),
-			'playspeed' => $this->settings->get('playspeed'),
-			'preload' => $this->settings->get('preload'),
-			'loop' => $this->settings->get('loop'),
+		// set configuration elements and their default values
+		$confelements = array(
+			'backgroundred'		=> '0',
+			'backgroundgreen'	=> '0',
+			'backgroundblue'	=> '0',
+			'backgroundalpha'	=> '0.5',
+			'padding'			=> '15',
+			'margin'			=> '20',
+			'width'				=> '800',
+			'height'			=> '600',
+			'minwidth'			=> '100',
+			'minheight'			=> '100',
+			'maxwidth'			=> '9999',
+			'maxheight'			=> '9999',
+			'autosize'			=> 'true',
+			'autoresize'		=> '!isTouch',
+			'autocenter'		=> '!isTouch',
+			'fittoview'			=> 'true',
+			'scrolling'			=> 'auto',
+			'wrapcss'			=> '',
+			'arrows'			=> 'true',
+			'closebtn'			=> 'true',
+			'closeclick'		=> 'false',
+			'nextclick'			=> 'false',
+			'mousewheel'		=> 'true',
+			'autoplay'			=> 'false',
+			'playspeed'			=> '3000',
+			'preload'			=> '3',
+			'loop'				=> 'true',
+			'openeffect'		=> 'fade',
+			'closeeffect'		=> 'fade',
+			'nexteffect'		=> 'elastic',
+			'preveffect'		=> 'elastic',
+			'openspeed'			=> '250',
+			'closespeed'		=> '250',
+			'nextspeed'			=> '250',
+			'prevspeed'			=> '250',
 		);
+
+		// get conf and set default
+		$conf = array();
+		foreach ($confelements as $elem => $default) {
+			$conf[$elem] = ($this->settings->get($elem) == '') ? $default : $this->settings->get($elem);
+		}
+
 		// validate conf
-		if ($this->settings->get('backgroundred') == '' and $this->settings->get('backgroundgreen') == '' and $this->settings->get('backgroundblue') == '' and $this->settings->get('backgroundalpha') == '') $conf['backgroundcolor'] = '';
+		$conf['backgroundcolor'] = $this->settings->get('backgroundred') . ', ' . $this->settings->get('backgroundgreen') . ', ' . $this->settings->get('backgroundblue') . ', ' . $this->settings->get('backgroundalpha');
 
 		// add jquery
 		$syntax->insert_jquery_in_head('jquery');
 		// add mousewheel plugin (optional)
-		if($conf['usemousewheel'])
+		if($conf['mousewheel'])
 			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
 		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
 		$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.pack.js"></script>');
 
 		// initialize return content and default class
-		$content = '';
+		$content = '<!-- BEGIN fancyBox plugin content --> ';
 		$class = 'fancybox';
 
 		// gallery with no image specified: load whole gallery
@@ -116,66 +134,82 @@ class fancyBox extends Plugin {
 		}
 
 		// attach fancyBox
-		$fancyjs = '<script type="text/javascript">
-						$(document).ready(function() {
-							$(".fancybox").fancybox({';
+		$fancyjs = '<!-- initialize fancyBox plugin: --> ';
+		$fancyjs .= '<script type="text/javascript"> $(document).ready(function() { $(".fancybox").fancybox({';
 		// set background-color
-		if($conf['backgroundcolor'] != '') $fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } },';
+		$fancyjs .= 'helpers : { overlay : { css : { "background" : "rgba(' . $conf['backgroundcolor'] . ')" } } },';
 		// set padding
-		if($conf['padding'] != '') $fancyjs .= 'padding : ' . $conf['padding'] . ',';
+		$fancyjs .= 'padding : ' . $conf['padding'] . ',';
 		// set margin
-		if($conf['margin'] != '') $fancyjs .= 'margin : ' . $conf['margin'] . ',';
+		$fancyjs .= 'margin : ' . $conf['margin'] . ',';
 		// set width
-		if($conf['width'] != '') $fancyjs .= 'width : ' . $conf['width'] . ',';
+		$fancyjs .= 'width : ' . $conf['width'] . ',';
 		// set height
-		if($conf['height'] != '') $fancyjs .= 'height : ' . $conf['height'] . ',';
+		$fancyjs .= 'height : ' . $conf['height'] . ',';
 		// set minwidth
-		if($conf['minwidth'] != '') $fancyjs .= 'minWidth : ' . $conf['minwidth'] . ',';
+		$fancyjs .= 'minWidth : ' . $conf['minwidth'] . ',';
 		// set minheight
-		if($conf['minheight'] != '') $fancyjs .= 'minHeight : ' . $conf['minheight'] . ',';
+		$fancyjs .= 'minHeight : ' . $conf['minheight'] . ',';
 		// set maxwidth
-		if($conf['maxwidth'] != '') $fancyjs .= 'maxWidth : ' . $conf['maxwidth'] . ',';
+		$fancyjs .= 'maxWidth : ' . $conf['maxwidth'] . ',';
 		// set maxheight
-		if($conf['maxheight'] != '') $fancyjs .= 'maxHeight : ' . $conf['maxheight'] . ',';
+		$fancyjs .= 'maxHeight : ' . $conf['maxheight'] . ',';
 
 		// set autosize
-		if($conf['autosize'] != '') $fancyjs .= 'autoSize : ' . $conf['autosize'] . ',';
+		$fancyjs .= 'autoSize : ' . $conf['autosize'] . ',';
 		// set autoresize
-		if($conf['autoresize'] != '') $fancyjs .= 'autoReSize : ' . $conf['autoresize'] . ',';
+		$fancyjs .= 'autoReSize : ' . $conf['autoresize'] . ',';
 		// set autocenter
-		if($conf['autocenter'] != '') $fancyjs .= 'autoCenter : ' . $conf['autocenter'] . ',';
+		$fancyjs .= 'autoCenter : ' . $conf['autocenter'] . ',';
 		// set fittoview
-		if($conf['fittoview'] != '') $fancyjs .= 'fitToView : ' . $conf['fittoview'] . ',';
+		$fancyjs .= 'fitToView : ' . $conf['fittoview'] . ',';
 
 		// select scrolling
-		if($conf['scrolling'] != '') $fancyjs .= 'scrolling : "' . $conf['scrolling'] . '",';
+		$fancyjs .= 'scrolling : "' . $conf['scrolling'] . '",';
 
 		// define wrapcss
-		if($conf['wrapcss'] != '') $fancyjs .= 'wrapCSS : "' . $conf['wrapcss'] . '",';
+		$fancyjs .= 'wrapCSS : "' . $conf['wrapcss'] . '",';
 
 		// set arrows
-		if($conf['arrows'] != '') $fancyjs .= 'arrows : ' . $conf['arrows'] . ',';
+		$fancyjs .= 'arrows : ' . $conf['arrows'] . ',';
 		// set closebtn
-		if($conf['closebtn'] != '') $fancyjs .= 'closeBtn : ' . $conf['closebtn'] . ',';
+		$fancyjs .= 'closeBtn : ' . $conf['closebtn'] . ',';
 		// set closeclick
-		if($conf['closeclick'] != '') $fancyjs .= 'closeClick : ' . $conf['closeclick'] . ',';
+		$fancyjs .= 'closeClick : ' . $conf['closeclick'] . ',';
 		// set nextclick
-		if($conf['nextclick'] != '') $fancyjs .= 'nextClick : ' . $conf['nextclick'] . ',';
+		$fancyjs .= 'nextClick : ' . $conf['nextclick'] . ',';
 
 		// set autoplay
-		if($conf['autoplay'] != '') $fancyjs .= 'autoPlay : ' . $conf['autoplay'] . ',';
+		$fancyjs .= 'autoPlay : ' . $conf['autoplay'] . ',';
 		// set playspeed
-		if($conf['playspeed'] != '') $fancyjs .= 'playSpeed : ' . $conf['playspeed'] . ',';
+		$fancyjs .= 'playSpeed : ' . $conf['playspeed'] . ',';
 		// set preload
-		if($conf['preload'] != '') $fancyjs .= 'preload : ' . $conf['preload'] . ',';
+		$fancyjs .= 'preload : ' . $conf['preload'] . ',';
 		// set loop
-		if($conf['loop'] != '') $fancyjs .= 'loop : ' . $conf['loop'] . ',';
+		$fancyjs .= 'loop : ' . $conf['loop'] . ',';
 
-		$fancyjs .=			'});
-						});
-					</script>';
+		// set openeffect
+		$fancyjs .= 'openEffect : "' . $conf['openeffect'] . '",';
+		// set openeffect
+		$fancyjs .= 'closeEffect : "' . $conf['closeeffect'] . '",';
+		// set openeffect
+		$fancyjs .= 'nextEffect : "' . $conf['nexteffect'] . '",';
+		// set openeffect
+		$fancyjs .= 'prevEffect : "' . $conf['preveffect'] . '",';
+
+		// set openspeed
+		$fancyjs .= 'openSpeed : ' . $conf['openspeed'] . ',';
+		// set closespeed
+		$fancyjs .= 'closeSpeed : ' . $conf['closespeed'] . ',';
+		// set nextspeed
+		$fancyjs .= 'nextSpeed : ' . $conf['nextspeed'] . ',';
+		// set prevspeed
+		$fancyjs .= 'prevSpeed : ' . $conf['prevspeed'] . ',';
+
+		$fancyjs .=	'});});</script>';
 		$syntax->insert_in_head($fancyjs);
 
+		$content .= '<!-- END fancyBox plugin content --> ';
 		return $content;
 	}
 
@@ -241,7 +275,7 @@ class fancyBox extends Plugin {
 		// set nextclick
 		$config['nextclick'] = $this->confCheck($this->admin_lang->getLanguageValue('config_nextclick'));
 		// use mousewheel
-		$config['usemousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_usemousewheel'));
+		$config['mousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_mousewheel'));
 
 		// set autoplay
 		$config['autoplay'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autoplay'));
@@ -251,6 +285,26 @@ class fancyBox extends Plugin {
 		$config['preload'] = $this->confText($this->admin_lang->getLanguageValue('config_preload'), '100', '3', "/^[0-9]{1,2}$/", $this->admin_lang->getLanguageValue('config_preload_error'));
 		// set loop
 		$config['loop'] = $this->confCheck($this->admin_lang->getLanguageValue('config_loop'));
+
+		// select animation effect
+		$descriptions = array(
+			'fade' => $this->admin_lang->getLanguageValue('config_effect_fade'),
+			'elastic' => $this->admin_lang->getLanguageValue('config_effect_elastic'),
+			'none' => $this->admin_lang->getLanguageValue('config_effect_none'),
+		);
+		$config['openeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_openeffect'), $descriptions, false);
+		$config['closeeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_closeeffect'), $descriptions, false);
+		$config['nexteffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_nexteffect'), $descriptions, false);
+		$config['preveffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_preveffect'), $descriptions, false);
+
+		// set openspeed
+		$config['openspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_openspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_openspeed_error'));
+		// set closespeed
+		$config['closespeed'] = $this->confText($this->admin_lang->getLanguageValue('config_closespeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_closespeed_error'));
+		// set nextspeed
+		$config['nextspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_nextspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_nextspeed_error'));
+		// set prevspeed
+		$config['prevspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_prevspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_prevspeed_error'));
 
 		// Template
 		$config['--template~~'] = '
@@ -265,12 +319,10 @@ class fancyBox extends Plugin {
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div>
-					<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description}</div>
-					<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description}</div>
-					<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description}</div>
-					<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description}</div>
-				</div>
+				<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description}</div>
+				<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description}</div>
+				<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description}</div>
+				<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div><div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}</div>
@@ -278,19 +330,26 @@ class fancyBox extends Plugin {
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
 				<div><div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div>
-					<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description}</div>
-					<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description}</div>
-					<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
-					<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
-					<div style="margin-bottom:5px;">{usemousewheel_checkbox} {usemousewheel_description}</div>
-				</div>
+				<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description}</div>
+				<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description}</div>
+				<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
+				<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
+				<div style="margin-bottom:5px;">{mousewheel_checkbox} {mousewheel_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div>
-					<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description}</div>
-					<div style="margin-bottom:5px;">{loop_checkbox} {loop_description}</div>
-					<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description}</div>
-					<div style="margin-bottom:5px;">{preload_text} {preload_description}</div>
+				<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description}</div>
+				<div style="margin-bottom:5px;">{loop_checkbox} {loop_description}</div>
+				<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description}</div>
+				<div style="margin-bottom:5px;">{preload_text} {preload_description}</div>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="width:24%;display:inline-block;vertical-align:top;">{openeffect_select} {openeffect_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{closeeffect_select} {closeeffect_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{nexteffect_select} {nexteffect_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{preveffect_select} {preveffect_description}</div>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="width:24%;display:inline-block;vertical-align:top;">{openspeed_text} {openspeed_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{closespeed_text} {closespeed_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{nextspeed_text} {nextspeed_description}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{prevspeed_text} {prevspeed_description}
 		';
 
 		// // textarea
