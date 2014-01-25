@@ -248,58 +248,70 @@ class fancyBox extends Plugin {
 		$config['preveffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_preveffect'), $descriptions, false);
 
 		// set openspeed
-		$config['openspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_openspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_openspeed_error'));
+		$config['openspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_openspeed'), '100', '30', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_openspeed_error'));
 		// set closespeed
-		$config['closespeed'] = $this->confText($this->admin_lang->getLanguageValue('config_closespeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_closespeed_error'));
+		$config['closespeed'] = $this->confText($this->admin_lang->getLanguageValue('config_closespeed'), '100', '30', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_closespeed_error'));
 		// set nextspeed
-		$config['nextspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_nextspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_nextspeed_error'));
+		$config['nextspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_nextspeed'), '100', '30', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_nextspeed_error'));
 		// set prevspeed
-		$config['prevspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_prevspeed'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_prevspeed_error'));
+		$config['prevspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_prevspeed'), '100', '30', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_prevspeed_error'));
 
-		// Template
+		// Template CSS
+		$css_admin_header = 'margin: -0.4em -0.8em 5px -0.8em; padding: 5px 9px; background-color: #234567; color: #fff; text-shadow: #000 0 1px 3px;';
+		// build Template
 		$config['--template~~'] = '
-				<div><div style="margin-bottom:5px;">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>{backgroundred_text} {backgroundred_description} &nbsp; &nbsp; {backgroundgreen_text} {backgroundgreen_description} &nbsp; &nbsp; {backgroundblue_text} {backgroundblue_description} &nbsp; &nbsp; {backgroundalpha_text} {backgroundalpha_description}</div>
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>
+				{backgroundred_text} {backgroundred_description} &nbsp; &nbsp; {backgroundgreen_text} {backgroundgreen_description} &nbsp; &nbsp; {backgroundblue_text} {backgroundblue_description} &nbsp; &nbsp; {backgroundalpha_text} {backgroundalpha_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div><div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}</div>
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_spacing') . '</div>
+				<div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_dimension') . '</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{width_text} {width_description}</div>{height_text} {height_description}</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{minwidth_text} {minwidth_description}</div>{minheight_text} {minheight_description}</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_size_position') . '</div>
 				<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description}</div>
 				<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description}</div>
 				<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description}</div>
 				<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div><div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}</div>
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_scrollbar') . '</div>
+				<div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div><div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}</div>
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_cssclass') . '</div>
+				<div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_navigation') . '</div>
 				<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description}</div>
 				<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description}</div>
 				<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
 				<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
 				<div style="margin-bottom:5px;">{mousewheel_checkbox} {mousewheel_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_slides') . '</div>
 				<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description}</div>
 				<div style="margin-bottom:5px;">{loop_checkbox} {loop_description}</div>
 				<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description}</div>
 				<div style="margin-bottom:5px;">{preload_text} {preload_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="width:24%;display:inline-block;vertical-align:top;">{openeffect_select} {openeffect_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{closeeffect_select} {closeeffect_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{nexteffect_select} {nexteffect_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{preveffect_select} {preveffect_description}</div>
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_animation') . '</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{openeffect_description} {openeffect_select}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{closeeffect_description} {closeeffect_select}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{nexteffect_description} {nexteffect_select}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{preveffect_description} {preveffect_select}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="width:24%;display:inline-block;vertical-align:top;">{openspeed_text} {openspeed_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{closespeed_text} {closespeed_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{nextspeed_text} {nextspeed_description}</div>
-				<div style="width:24%;display:inline-block;vertical-align:top;">{prevspeed_text} {prevspeed_description}
+				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_duration') . '</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{openspeed_description}<br />{openspeed_text}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{closespeed_description}<br />{closespeed_text}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{nextspeed_description}<br />{nextspeed_text}</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">{prevspeed_description}<br />{prevspeed_text}
 		';
 
 		// // textarea
