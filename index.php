@@ -19,6 +19,12 @@ class fancyBox extends Plugin {
 	private $cms_lang;
 	var $gallery;
 
+	private $plugin_author = 'HPdesigner';
+	private $plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
+	private $plugin_title = 'fancyBox';
+	private $plugin_version = 'v0.0.2014-01-xx';
+	private $mozilo_version = '2.0';
+
 	function getContent($value) {
 
 		global $CMS_CONF;
@@ -257,57 +263,63 @@ class fancyBox extends Plugin {
 		$config['prevspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_prevspeed'), '100', '30', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_prevspeed_error'));
 
 		// Template CSS
-		$css_admin_header = 'margin: -0.4em -0.8em 5px -0.8em; padding: 5px 9px; background-color: #234567; color: #fff; text-shadow: #000 0 1px 3px;';
+		$css_admin_header = 'margin: -0.4em -0.8em -5px -0.8em; padding: 10px; background-color: #234567; color: #fff; text-shadow: #000 0 1px 3px;';
+		$css_admin_subheader = 'margin: -0.4em -0.8em 5px -0.8em; padding: 5px 9px; background-color: #234567; color: #fff; text-shadow: #000 0 1px 3px;';
 		// build Template
 		$config['--template~~'] = '
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>
+				<div style="' . $css_admin_header . '"><span style="font-size:20px;vertical-align: top;padding-top: 3px;display: inline-block;">'
+				. $this->admin_lang->getLanguageValue('admin_header',$this->plugin_title)
+				. '</span><a href="' . $this->plugin_docu . '"><img style="float:right;" src="http://media.devmount.de/logo_pluginconf.png" /></a></div>
+			</li>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>
 				{backgroundred_text} {backgroundred_description} &nbsp; &nbsp; {backgroundgreen_text} {backgroundgreen_description} &nbsp; &nbsp; {backgroundblue_text} {backgroundblue_description} &nbsp; &nbsp; {backgroundalpha_text} {backgroundalpha_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_spacing') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_spacing') . '</div>
 				<div style="margin-bottom:5px;">{padding_text} {padding_description}</div>{margin_text} {margin_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_dimension') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_dimension') . '</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{width_text} {width_description}</div>{height_text} {height_description}</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{minwidth_text} {minwidth_description}</div>{minheight_text} {minheight_description}</div>
 				<div style="width:32%;display:inline-block;vertical-align:top;"><div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description}</div>{maxheight_text} {maxheight_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_size_position') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_size_position') . '</div>
 				<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description}</div>
 				<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description}</div>
 				<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description}</div>
 				<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description}</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_scrollbar') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_scrollbar') . '</div>
 				<div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description}
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_cssclass') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_cssclass') . '</div>
 				<div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_navigation') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_navigation') . '</div>
 				<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description}</div>
 				<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description}</div>
 				<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description}</div>
 				<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description}</div>
 				<div style="margin-bottom:5px;">{mousewheel_checkbox} {mousewheel_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_slides') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_slides') . '</div>
 				<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description}</div>
 				<div style="margin-bottom:5px;">{loop_checkbox} {loop_description}</div>
 				<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description}</div>
 				<div style="margin-bottom:5px;">{preload_text} {preload_description}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_animation') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_animation') . '</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{openeffect_description} {openeffect_select}</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{closeeffect_description} {closeeffect_select}</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{nexteffect_description} {nexteffect_select}</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{preveffect_description} {preveffect_select}</div>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix">
-				<div style="' . $css_admin_header . '">' . $this->admin_lang->getLanguageValue('admin_duration') . '</div>
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_duration') . '</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{openspeed_description}<br />{openspeed_text}</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{closespeed_description}<br />{closespeed_text}</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">{nextspeed_description}<br />{nextspeed_text}</div>
@@ -359,15 +371,15 @@ class fancyBox extends Plugin {
 
 		$info = array(
 			// plugin name and version
-			'<b>fancyBox</b> v0.0.2014-01-xx',
+			'<b>' . $this->plugin_title . '</b> ' . $this->plugin_version,
 			// moziloCMS version
-			'2.0',
+			$this->mozilo_version,
 			// short description, only <span> and <br /> are allowed
 			$this->admin_lang->getLanguageValue('description'), 
 			// author
-			'HPdesigner',
+			$this->plugin_author,
 			// documentation url
-			'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html',
+			$this->plugin_docu,
 			// plugin tag for select box when editing a page, can be emtpy
 			array(
 				'{fancyBox|parameter}' => $this->admin_lang->getLanguageValue('placeholder'),

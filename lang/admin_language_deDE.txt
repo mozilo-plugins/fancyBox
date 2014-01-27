@@ -59,6 +59,7 @@ config_nextspeed				= Vor
 config_nextspeed_error			= Bitte eine Zahl zwischen 0 und 9999 eingeben!
 config_prevspeed				= Zurück
 config_prevspeed_error			= Bitte eine Zahl zwischen 0 und 9999 eingeben!
+admin_header					= {PARAM1} Plugin Konfiguration
 admin_rgba						= Hintergrundfarbe
 admin_spacing					= Abstände
 admin_dimension					= Abmessungen
