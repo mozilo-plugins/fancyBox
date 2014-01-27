@@ -20,44 +20,44 @@ class fancyBox extends Plugin {
 	var $gallery;
 	
 	// set configuration elements and their default values
-	// element => default, toquote, wrap
+	// element => default, toquote, wrap, type, maxlength/descriptions, size/multiselect, regex
 	// wrap: # -> key, | -> value
 	private $confdefault = array(
-		'backgroundred'		=> array('0',false,''),
-		'backgroundgreen'	=> array('0',false,''),
-		'backgroundblue'	=> array('0',false,''),
-		'backgroundalpha'	=> array('0.5',false,''),
-		'padding'			=> array('15',false,'# : |,'),
-		'margin'			=> array('20',false,'# : |,'),
-		'width'				=> array('800',false,'# : |,'),
-		'height'			=> array('600',false,'# : |,'),
-		'minwidth'			=> array('100',false,'# : |,'),
-		'minheight'			=> array('100',false,'# : |,'),
-		'maxwidth'			=> array('9999',false,'# : |,'),
-		'maxheight'			=> array('9999',false,'# : |,'),
-		'autosize'			=> array('true',false,'# : |,'),
-		'autoresize'		=> array('!isTouch',false,'# : |,'),
-		'autocenter'		=> array('!isTouch',false,'# : |,'),
-		'fittoview'			=> array('true',false,'# : |,'),
-		'scrolling'			=> array('auto',true,'# : |,'),
-		'wrapcss'			=> array('',true,'# : |,'),
-		'arrows'			=> array('true',false,'# : |,'),
-		'closebtn'			=> array('true',false,'# : |,'),
-		'closeclick'		=> array('false',false,'# : |,'),
-		'nextclick'			=> array('false',false,'# : |,'),
-		'mousewheel'		=> array('true',false,'# : |,'),
-		'autoplay'			=> array('false',false,'# : |,'),
-		'playspeed'			=> array('3000',false,'# : |,'),
-		'preload'			=> array('3',false,'# : |,'),
-		'loop'				=> array('true',false,'# : |,'),
-		'openeffect'		=> array('fade',true,'# : |,'),
-		'closeeffect'		=> array('fade',true,'# : |,'),
-		'nexteffect'		=> array('elastic',true,'# : |,'),
-		'preveffect'		=> array('elastic',true,'# : |,'),
-		'openspeed'			=> array('250',false,'# : |,'),
-		'closespeed'		=> array('250',false,'# : |,'),
-		'nextspeed'			=> array('250',false,'# : |,'),
-		'prevspeed'			=> array('250',false,'# : |,'),
+		'backgroundred'		=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundgreen'	=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundblue'	=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundalpha'	=> array('0.5',false,'','text','','3',''), // TODO: regex float
+		'padding'			=> array('15',false,'# : |,','text','','3',"/^[0-9]{1,3}$/"),
+		'margin'			=> array('20',false,'# : |,','text','','3',"/^[0-9]{1,3}$/"),
+		'width'				=> array('800',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'height'			=> array('600',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'minwidth'			=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'minheight'			=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'maxwidth'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'maxheight'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'autosize'			=> array('true',false,'# : |,','check'),
+		'autoresize'		=> array('!isTouch',false,'# : |,','check'),
+		'autocenter'		=> array('!isTouch',false,'# : |,','check'),
+		'fittoview'			=> array('true',false,'# : |,','check'),
+		'scrolling'			=> array('auto',true,'# : |,','select',array('auto','yes','no','visible'),false),
+		'wrapcss'			=> array('',true,'# : |,','text','','',''),
+		'arrows'			=> array('true',false,'# : |,','check'),
+		'closebtn'			=> array('true',false,'# : |,','check'),
+		'closeclick'		=> array('false',false,'# : |,','check'),
+		'nextclick'			=> array('false',false,'# : |,','check'),
+		'mousewheel'		=> array('true',false,'# : |,','check'),
+		'autoplay'			=> array('false',false,'# : |,','check'),
+		'playspeed'			=> array('3000',false,'# : |,','text','','3',"/^[0-9]{1,5}$/"),
+		'preload'			=> array('3',false,'# : |,','text','','3',"/^[0-9]{1,2}$/"),
+		'loop'				=> array('true',false,'# : |,','check'),
+		'openeffect'		=> array('fade',true,'# : |,','select',array('fade','elastic','none'),false),
+		'closeeffect'		=> array('fade',true,'# : |,','select',array('fade','elastic','none'),false),
+		'nexteffect'		=> array('elastic',true,'# : |,','select',array('fade','elastic','none'),false),
+		'preveffect'		=> array('elastic',true,'# : |,','select',array('fade','elastic','none'),false),
+		'openspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'closespeed'		=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'nextspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'prevspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 	);
 
 	const plugin_author = 'HPdesigner';
@@ -170,97 +170,19 @@ class fancyBox extends Plugin {
 
 		$config = array();
 
-		// background color red
-		$config['backgroundred'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundred'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundred_error'));
-		// background color green
-		$config['backgroundgreen'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundgreen'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundgreen_error'));
-		// background color blue
-		$config['backgroundblue'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundblue'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_backgroundblue_error'));
-		// background color alpha
-		$config['backgroundalpha'] = $this->confText($this->admin_lang->getLanguageValue('config_backgroundalpha'), '100', '3'); // TODO regex for floating point
-
-		// padding
-		$config['padding'] = $this->confText($this->admin_lang->getLanguageValue('config_padding'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_padding_error'));
-		// margin
-		$config['margin'] = $this->confText($this->admin_lang->getLanguageValue('config_margin'), '100', '3', "/^[0-9]{1,3}$/", $this->admin_lang->getLanguageValue('config_margin_error'));
-
-		// width
-		$config['width'] = $this->confText($this->admin_lang->getLanguageValue('config_width'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_width_error'));
-		// height
-		$config['height'] = $this->confText($this->admin_lang->getLanguageValue('config_height'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_height_error'));
-		// minwidth
-		$config['minwidth'] = $this->confText($this->admin_lang->getLanguageValue('config_minwidth'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_minwidth_error'));
-		// minheight
-		$config['minheight'] = $this->confText($this->admin_lang->getLanguageValue('config_minheight'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_minheight_error'));
-		// maxwidth
-		$config['maxwidth'] = $this->confText($this->admin_lang->getLanguageValue('config_maxwidth'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_maxwidth_error'));
-		// maxheight
-		$config['maxheight'] = $this->confText($this->admin_lang->getLanguageValue('config_maxheight'), '100', '3', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_maxheight_error'));
-
-		// set autosize
-		$config['autosize'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autosize'));
-		// set autoresize
-		$config['autoresize'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autoresize'));
-		// set autocenter
-		$config['autocenter'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autocenter'));
-		// set fittoview
-		$config['fittoview'] = $this->confCheck($this->admin_lang->getLanguageValue('config_fittoview'));
-
-		// select scrolling
-		$descriptions = array(
-			'auto' => $this->admin_lang->getLanguageValue('config_scrolling_auto'),
-			'yes' => $this->admin_lang->getLanguageValue('config_scrolling_yes'),
-			'no' => $this->admin_lang->getLanguageValue('config_scrolling_no'),
-			'visible' => $this->admin_lang->getLanguageValue('config_scrolling_visible')
-		);
-		$config['scrolling'] = $this->confSelect($this->admin_lang->getLanguageValue('config_scrolling'), $descriptions, false);
-
-		// set wrapcss
-		$config['wrapcss'] = $this->confText($this->admin_lang->getLanguageValue('config_wrapcss'));
-
-		// set arrows
-		$config['arrows'] = $this->confCheck($this->admin_lang->getLanguageValue('config_arrows'));
-		// set closebtn
-		$config['closebtn'] = $this->confCheck($this->admin_lang->getLanguageValue('config_closebtn'));
-		// set closeclick
-		$config['closeclick'] = $this->confCheck($this->admin_lang->getLanguageValue('config_closeclick'));
-		// set nextclick
-		$config['nextclick'] = $this->confCheck($this->admin_lang->getLanguageValue('config_nextclick'));
-		// use mousewheel
-		$config['mousewheel'] = $this->confCheck($this->admin_lang->getLanguageValue('config_mousewheel'));
-
-		// set autoplay
-		$config['autoplay'] = $this->confCheck($this->admin_lang->getLanguageValue('config_autoplay'));
-		// set playspeed
-		$config['playspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_playspeed'), '100', '3', "/^[0-9]{1,5}$/", $this->admin_lang->getLanguageValue('config_playspeed_error'));
-		// set preload
-		$config['preload'] = $this->confText($this->admin_lang->getLanguageValue('config_preload'), '100', '3', "/^[0-9]{1,2}$/", $this->admin_lang->getLanguageValue('config_preload_error'));
-		// set loop
-		$config['loop'] = $this->confCheck($this->admin_lang->getLanguageValue('config_loop'));
-
-		// select animation effect
-		$descriptions = array(
-			'fade' => $this->admin_lang->getLanguageValue('config_effect_fade'),
-			'elastic' => $this->admin_lang->getLanguageValue('config_effect_elastic'),
-			'none' => $this->admin_lang->getLanguageValue('config_effect_none'),
-		);
-		// set openeffect
-		$config['openeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_openeffect'), $descriptions, false);
-		// set closeeffect
-		$config['closeeffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_closeeffect'), $descriptions, false);
-		// set nexteffect
-		$config['nexteffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_nexteffect'), $descriptions, false);
-		// set preveffect
-		$config['preveffect'] = $this->confSelect($this->admin_lang->getLanguageValue('config_preveffect'), $descriptions, false);
-
-		// set openspeed
-		$config['openspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_openspeed'), '', '', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_openspeed_error'));
-		// set closespeed
-		$config['closespeed'] = $this->confText($this->admin_lang->getLanguageValue('config_closespeed'), '', '', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_closespeed_error'));
-		// set nextspeed
-		$config['nextspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_nextspeed'), '', '', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_nextspeed_error'));
-		// set prevspeed
-		$config['prevspeed'] = $this->confText($this->admin_lang->getLanguageValue('config_prevspeed'), '', '', "/^[0-9]{1,4}$/", $this->admin_lang->getLanguageValue('config_prevspeed_error'));
+		foreach ($this->confdefault as $key => $value) {
+			switch ($value[3]) {
+				case 'text': $config[$key] = $this->confText($this->admin_lang->getLanguageValue('config_' . $key), $value[4], $value[5], $value[6], $this->admin_lang->getLanguageValue('config_' . $key . '_error')); break;
+				case 'check': $config[$key] = $this->confCheck($this->admin_lang->getLanguageValue('config_' . $key)); break;
+				case 'select': 
+					$descriptions = array();
+					foreach ($value[4] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $desc);
+					$config[$key] = $this->confSelect($this->admin_lang->getLanguageValue('config_' . $key),$descriptions,$value[5]); break;
+				default:
+					# TODO
+					break;
+			}
+		}
 
 		// Template CSS
 		$css_admin_header = 'margin: -0.4em -0.8em -5px -0.8em; padding: 10px; background-color: #234567; color: #fff; text-shadow: #000 0 1px 3px;';
