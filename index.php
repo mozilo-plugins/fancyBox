@@ -3,7 +3,7 @@
 /**
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
- * @version: v0.0.2014-01-xx
+ * @version: v0.0.2014-01-28
  * @license: GPL
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
@@ -22,8 +22,13 @@ class fancyBox extends Plugin {
 	const plugin_author = 'HPdesigner';
 	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
 	const plugin_title = 'fancyBox';
-	const plugin_version = 'v0.0.2014-01-xx';
+	const plugin_version = 'v0.0.2014-01-28';
 	const mozilo_version = '2.0';
+	private $plugin_tags = array(
+		'image' => '{fancyBox|image|<gallery>|<file>}',
+		'inline' => '{fancyBox|inline|<text>|<content>}',
+		'link' => '{fancyBox|link|<text>|<url>}',
+	);
 	
 	// set configuration elements, their default values and their configuration parameters
 	// element => default, toquote, wrap (# -> key, | -> value), type, maxlength/descriptions, size/multiselect, regex
@@ -277,39 +282,6 @@ class fancyBox extends Plugin {
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{prevspeed_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['prevspeed'][0] .']</span><br />{prevspeed_text}
 		';
 
-		// // textarea
-		// $config['textarea']  = array(
-		// 	'type' => 'textarea',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_textarea'),
-		// 	'cols' => '10',
-		// 	'rows' => '10',
-		// 	'regex' => "/^[0-9]{1,2}$/",
-		// 	'regex_error' => $this->admin_lang->getLanguageValue('config_textarea_error')
-		// );
-
-		// // password
-		// $config['password']  = array(
-		// 	'type' => 'password',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_password'),
-		// 	'maxlength' => '100',
-		// 	'size' => '5',
-		// 	'regex' => "/^[0-9]{3,5}$/",
-		// 	'regex_error' => $this->admin_lang->getLanguageValue('config_password_error'),
-		// 	'saveasmd5' => true
-		// );
-
-
-		// // radio
-		// $config['radio']  = array(
-		// 	'type' => 'radio',
-		// 	'description' => $this->admin_lang->getLanguageValue('config_radio'),
-		// 	'descriptions' => array(
-		// 		'blau' => 'Blau',
-		// 		'rot' => 'Rot',
-		// 		'gruen' => 'Grün'
-		// 	)
-		// );
-
 		return $config;
 	}  
 
@@ -319,6 +291,10 @@ class fancyBox extends Plugin {
 		global $ADMIN_CONF;
 
 		$this->admin_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/admin_language_' . $ADMIN_CONF->get('language') . '.txt');
+
+		// build plugin tags
+		$tags = array();
+		foreach ($this->plugin_tags as $key => $tag) $tags[$tag] = $this->admin_lang->getLanguageValue('tag_' . $key);
 
 		$info = array(
 			// plugin name and version
@@ -332,9 +308,7 @@ class fancyBox extends Plugin {
 			// documentation url
 			self::plugin_docu,
 			// plugin tag for select box when editing a page, can be emtpy
-			array(
-				'{fancyBox|parameter}' => $this->admin_lang->getLanguageValue('placeholder'),
-			)
+			$tags
 		);
 
 		return $info;
