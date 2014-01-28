@@ -18,10 +18,15 @@ class fancyBox extends Plugin {
 	public $admin_lang;
 	private $cms_lang;
 	var $gallery;
+
+	const plugin_author = 'HPdesigner';
+	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
+	const plugin_title = 'fancyBox';
+	const plugin_version = 'v0.0.2014-01-xx';
+	const mozilo_version = '2.0';
 	
-	// set configuration elements and their default values
-	// element => default, toquote, wrap, type, maxlength/descriptions, size/multiselect, regex
-	// wrap: # -> key, | -> value
+	// set configuration elements, their default values and their configuration parameters
+	// element => default, toquote, wrap (# -> key, | -> value), type, maxlength/descriptions, size/multiselect, regex
 	private $confdefault = array(
 		'backgroundred'		=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
 		'backgroundgreen'	=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
@@ -60,12 +65,6 @@ class fancyBox extends Plugin {
 		'prevspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 	);
 
-	const plugin_author = 'HPdesigner';
-	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
-	const plugin_title = 'fancyBox';
-	const plugin_version = 'v0.0.2014-01-xx';
-	const mozilo_version = '2.0';
-
 	function getContent($value) {
 
 		global $CMS_CONF;
@@ -79,13 +78,11 @@ class fancyBox extends Plugin {
 
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
-		// get language labels
-		// $label = $this->cms_lang->getLanguageValue('label');
-
 		// get params
 		$values = explode('|', $value);
-		$param_gal = trim($values[0]);
-		$param_img = trim($values[1]);
+		$param_typ = trim($values[0]);
+		$param_gal = trim($values[1]);
+		$param_img = trim($values[2]);
 
 		// get conf and set default
 		$conf = array();
@@ -119,41 +116,61 @@ class fancyBox extends Plugin {
 		$content = '<!-- BEGIN fancyBox plugin content --> ';
 		$class = 'fancybox';
 
-		// gallery with no image specified: load whole gallery
-		if ($param_gal != '' and $param_img == '') {
-			$images = $this->gallery->get_GalleryImagesArray($param_gal);
-			// build image tag for every image
-			foreach ($images as $image) {
+		if ($param_typ == 'image') {
+			$class = $class . '_image';
+			// gallery with no image specified: load whole gallery
+			if ($param_gal != '' and $param_img == '') {
+				$images = $this->gallery->get_GalleryImagesArray($param_gal);
+				$class = $class . '_' . $param_gal;
+				// build image tag for every image
+				foreach ($images as $image) {
+					// build image paths
+					$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
+					$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
+					$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+				}
+			}
+
+			// gallery with image specified: load single image from gallery
+			if ($param_gal != '' and $param_img != '') {
 				// build image paths
-				$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
-				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
+				$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
+				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
+				// build single image tag
+				$class = $class . '_' . $param_gal;
 				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
 			}
-		}
 
-		// gallery with image specified: load single image from gallery
-		if ($param_gal != '' and $param_img != '') {
-			// build image paths
-			$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
-			$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
-			// build single image tag
-			$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+			// no gallery but image specified: load single image from files
+			if ($param_gal == '' and $param_img != '') {
+				$param_img = explode('%3A', $param_img);
+				$param_cat = urlencode($param_img[0]);
+				$param_file = $param_img[1];
+				// build image path
+				$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
+				// build single image tag
+				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img);
+			}
 		}
-
-		// no gallery but image specified: load single image from files
-		if ($param_gal == '' and $param_img != '') {
-			$param_img = explode('%3A', $param_img);
-			$param_cat = urlencode($param_img[0]);
-			$param_file = $param_img[1];
-			// build image path
-			$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
-			// build single image tag
-			$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img);
+		else if ($param_typ == 'inline') {
+			$class = $class . '_inline';
+			$id = '123';
+			// build inline content
+			$content .= '<div id="' . $id . '" style="display:none;">' . $param_img . '</div>';
+			// build link
+			$content .= '<a class="' . $class . '" href="#' . $id . '"> ' . $param_gal . '</a>';
+		}
+		else if ($param_typ == 'link') {
+			$class = $class . '_link';
+			// build link
+			$content .= '<a class="' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
+		} else {
+			return $this->cms_lang->getLanguageValue('error_param_typ');
 		}
 
 		// attach fancyBox
 		$fancyjs = '<!-- initialize fancyBox plugin: --> ';
-		$fancyjs .= '<script type="text/javascript"> $(document).ready(function() { $(".fancybox").fancybox({';
+		$fancyjs .= '<script type="text/javascript"> $(document).ready(function() { $(".' . $class . '").fancybox({';
 
 		foreach ($conf as $key => $value)
 			$fancyjs .= $this->wrap($key, $value[0], $value[1], $value[2]);
@@ -170,6 +187,7 @@ class fancyBox extends Plugin {
 
 		$config = array();
 
+		// read config values
 		foreach ($this->confdefault as $key => $value) {
 			switch ($value[3]) {
 				case 'text': $config[$key] = $this->confText($this->admin_lang->getLanguageValue('config_' . $key), $value[4], $value[5], $value[6], $this->admin_lang->getLanguageValue('config_' . $key . '_error')); break;
@@ -178,9 +196,7 @@ class fancyBox extends Plugin {
 					$descriptions = array();
 					foreach ($value[4] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $desc);
 					$config[$key] = $this->confSelect($this->admin_lang->getLanguageValue('config_' . $key),$descriptions,$value[5]); break;
-				default:
-					# TODO
-					break;
+				default: break;
 			}
 		}
 
@@ -189,6 +205,7 @@ class fancyBox extends Plugin {
 		$css_admin_subheader = 'margin: -0.4em -0.8em 5px -0.8em; padding: 5px 9px; background-color: #ddd; color: #111; text-shadow: #fff 0 1px 2px;';
 		$css_admin_li = 'background: #eee;';
 		$css_admin_default = 'color: #aaa;padding-left: 6px;';
+
 		// build Template
 		$config['--template~~'] = '
 				<div style="' . $css_admin_header . '"><span style="font-size:20px;vertical-align: top;padding-top: 3px;display: inline-block;">'
