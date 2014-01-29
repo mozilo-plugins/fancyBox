@@ -1,6 +1,14 @@
 /*
-	pluginVorlage CSS styles
+	fancyBox CSS styles
 */
 
-.pluginVorlage {	
+.fancyBox {	
+}
+
+.fancyBoxError {
+	padding: 4px;
+	margin: 2px 0;
+	border: 1px solid red;
+	color: red;
+	background-color: #fdd;
 }

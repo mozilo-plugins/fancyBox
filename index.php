@@ -4,7 +4,7 @@
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
  * @version: v0.0.2014-01-28
- * @license: GPL
+ * @license: GPL v3
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
  *
@@ -69,6 +69,7 @@ class fancyBox extends Plugin {
 		'nextspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 		'prevspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 	);
+
 
 	function getContent($value) {
 
@@ -159,7 +160,7 @@ class fancyBox extends Plugin {
 		}
 		else if ($param_typ == 'inline') {
 			$class = $class . '_inline';
-			$id = '123';
+			$id = rand();
 			// build inline content
 			$content .= '<div id="' . $id . '" style="display:none;">' . $param_img . '</div>';
 			// build link
@@ -170,7 +171,7 @@ class fancyBox extends Plugin {
 			// build link
 			$content .= '<a class="' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
 		} else {
-			return $this->cms_lang->getLanguageValue('error_param_typ');
+			return $this->throwError($this->cms_lang->getLanguageValue('error_param_typ'));
 		}
 
 		// attach fancyBox
@@ -362,6 +363,10 @@ class fancyBox extends Plugin {
 		if ($toquote) $value = '"' . $value . '"';
 		$wrapped = str_replace(array('#','|'), array($key, $value), $wrap);
 		return $wrapped;
+	}
+
+	protected function throwError($text) {
+		return '<div class="' . self::plugin_title . 'Error">' . $text . '</div>';
 	}
 
 }
