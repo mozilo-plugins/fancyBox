@@ -164,12 +164,12 @@ class fancyBox extends Plugin {
 			// build inline content
 			$content .= '<div id="' . $id . '" style="display:none;">' . $param_img . '</div>';
 			// build link
-			$content .= '<a class="' . $class . '" href="#' . $id . '"> ' . $param_gal . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '"> ' . $param_gal . '</a>';
 		}
 		else if ($param_typ == 'link') {
 			$class = $class . '_link';
 			// build link
-			$content .= '<a class="' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
 		} else {
 			return $this->throwError($this->cms_lang->getLanguageValue('error_param_typ'));
 		}
@@ -318,7 +318,7 @@ class fancyBox extends Plugin {
 
 	protected function buildImgTag($class, $rel, $href, $src) {
 		$html .= '<a ';
-		$html .= 	'class="' . $class . '" ';
+		$html .= 	'class="' . self::plugin_title . ' ' . $class . '" ';
 		$html .= 	'rel="' . $rel . '" ';
 		$html .= 	'href="' . $href . '" ';
 		$html .= '>';
