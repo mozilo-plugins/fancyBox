@@ -124,8 +124,33 @@ class fancyBox extends Plugin {
 
 		if ($param_typ == 'image') {
 			$class = $class . '_image';
+			// check wether gallery exists
+			$is_gallery = false;
+			$is_image = false;
+			if ($param_gal != '') {
+				if (!in_array($param_gal, $this->gallery->get_GalleriesArray()))
+					return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery',$param_gal));
+				else
+					$is_gallery = true;
+			}
+			// check wether image exists
+			if ($is_gallery) {
+				if ($param_img != '') {
+					if (!in_array($param_img, $this->gallery->get_GalleryImagesArray($param_gal))) {
+						return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery_image',$param_img));
+					} else
+						$is_image = true;
+				}
+			} else {
+				if ($param_img != '') {
+					// TODO: check image in files
+				} else
+					// no gallery and no image specified: throw error message
+					return $this->throwError($this->cms_lang->getLanguageValue('error_no_image_param'));
+			}
+
 			// gallery with no image specified: load whole gallery
-			if ($param_gal != '' and $param_img == '') {
+			if ($is_gallery and $param_img == '') {
 				$images = $this->gallery->get_GalleryImagesArray($param_gal);
 				$class = $class . '_' . $param_gal;
 				// build image tag for every image
@@ -138,7 +163,7 @@ class fancyBox extends Plugin {
 			}
 
 			// gallery with image specified: load single image from gallery
-			if ($param_gal != '' and $param_img != '') {
+			if ($is_gallery and $param_img != '') {
 				// build image paths
 				$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
 				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
@@ -148,7 +173,7 @@ class fancyBox extends Plugin {
 			}
 
 			// no gallery but image specified: load single image from files
-			if ($param_gal == '' and $param_img != '') {
+			if (!$is_gallery and $param_img != '') {
 				$param_img = explode('%3A', $param_img);
 				$param_cat = urlencode($param_img[0]);
 				$param_file = $param_img[1];
