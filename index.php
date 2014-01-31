@@ -3,7 +3,7 @@
 /**
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
- * @version: v0.0.2014-01-28
+ * @version: v0.0.2014-01-31
  * @license: GPL v3
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
@@ -22,7 +22,7 @@ class fancyBox extends Plugin {
 	const plugin_author = 'HPdesigner';
 	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
 	const plugin_title = 'fancyBox';
-	const plugin_version = 'v0.0.2014-01-28';
+	const plugin_version = 'v0.0.2014-01-31';
 	const mozilo_version = '2.0';
 	private $plugin_tags = array(
 		'image' => '{fancyBox|image|<gallery>|<file>}',
