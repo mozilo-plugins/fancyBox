@@ -133,8 +133,6 @@ class fancyBox extends Plugin {
 				else
 					$is_gallery = true;
 			}
-			print_r($param_gal);
-			print_r($is_gallery);
 			// check wether image exists
 			if ($is_gallery) {
 				if ($param_img != '') {
