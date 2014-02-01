@@ -133,6 +133,8 @@ class fancyBox extends Plugin {
 				else
 					$is_gallery = true;
 			}
+			print_r($param_gal);
+			print_r($is_gallery);
 			// check wether image exists
 			if ($is_gallery) {
 				if ($param_img != '') {
@@ -152,7 +154,7 @@ class fancyBox extends Plugin {
 			// gallery with no image specified: load whole gallery
 			if ($is_gallery and $param_img == '') {
 				$images = $this->gallery->get_GalleryImagesArray($param_gal);
-				$class = $class . '_' . $param_gal;
+				$class = $class . '_' . str_replace('%20', '_', $param_gal);
 				// build image tag for every image
 				foreach ($images as $image) {
 					// build image paths
