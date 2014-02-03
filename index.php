@@ -76,7 +76,6 @@ class fancyBox extends Plugin {
 		global $CMS_CONF;
 		global $syntax;
 		global $CatPage;
-
 		// initialize mozilo gallery
 		include_once($BASE_DIR . 'cms/' . 'GalleryClass.php');
 		$this->gallery = new GalleryClass();
@@ -180,7 +179,7 @@ class fancyBox extends Plugin {
 				// build image path
 				$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
 				// build single image tag
-				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img);
+				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, $conf['minwidth'][0], $conf['minheight'][0]);
 			}
 		}
 		else if ($param_typ == 'inline') {
@@ -341,13 +340,16 @@ class fancyBox extends Plugin {
 	}
 
 
-	protected function buildImgTag($class, $rel, $href, $src) {
+	protected function buildImgTag($class, $rel, $href, $src, $minwidth='', $minheight='') {
 		$html .= '<a ';
 		$html .= 	'class="' . self::plugin_title . ' ' . $class . '" ';
 		$html .= 	'rel="' . $rel . '" ';
 		$html .= 	'href="' . $href . '" ';
 		$html .= '>';
-		$html .= 	'<img src="' . $src . '" alt="" />';
+		$html .= 	'<img src="' . $src .'" ';
+		if ($minwidth != '') $html .= 'width="' . $minwidth . '" ';
+		if ($minheight != '') $html .= 'height="' . $minheight . '" ';
+		$html .= ' />';
 		$html .= '</a>';
 		return $html;
 	}
