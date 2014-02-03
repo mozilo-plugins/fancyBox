@@ -79,7 +79,7 @@ class fancyBox extends Plugin {
 		// initialize mozilo gallery
 		include_once($BASE_DIR . 'cms/' . 'GalleryClass.php');
 		$this->gallery = new GalleryClass();
-		$this->gallery->initial_Galleries();
+		$this->gallery->initial_Galleries(false,false,false,true);
 
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
@@ -157,7 +157,8 @@ class fancyBox extends Plugin {
 					// build image paths
 					$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
 					$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
-					$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+					$title = $this->gallery->get_ImageDescription($param_gal, $image, 'html');
+					$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
 				}
 			}
 
@@ -168,7 +169,8 @@ class fancyBox extends Plugin {
 				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
 				// build single image tag
 				$class = $class . '_' . $param_gal;
-				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb);
+				$title = $this->gallery->get_ImageDescription($param_gal, $param_img, 'html');
+				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
 			}
 
 			// no gallery but image specified: load single image from files
@@ -179,7 +181,7 @@ class fancyBox extends Plugin {
 				// build image path
 				$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
 				// build single image tag
-				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, $conf['minwidth'][0], $conf['minheight'][0]);
+				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['minwidth'][0], $conf['minheight'][0]);
 			}
 		}
 		else if ($param_typ == 'inline') {
@@ -340,11 +342,12 @@ class fancyBox extends Plugin {
 	}
 
 
-	protected function buildImgTag($class, $rel, $href, $src, $minwidth='', $minheight='') {
+	protected function buildImgTag($class, $rel, $href, $src, $title='', $minwidth='', $minheight='') {
 		$html .= '<a ';
 		$html .= 	'class="' . self::plugin_title . ' ' . $class . '" ';
 		$html .= 	'rel="' . $rel . '" ';
 		$html .= 	'href="' . $href . '" ';
+		if ($title != '') $html .= 	'title="' . $title . '" ';
 		$html .= '>';
 		$html .= 	'<img src="' . $src .'" ';
 		if ($minwidth != '') $html .= 'width="' . $minwidth . '" ';
