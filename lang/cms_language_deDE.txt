@@ -1,3 +1,4 @@
+error							= Fehler
 error_param_type				= Es wurde ein ungültiger Typ angegeben. Erlaubte Werte sind "image", "inline" und "link".
 error_no_image_param			= Es wurde weder eine Gallerie, noch ein Bild angegeben. Mindestens eine Angabe muss gemacht werden.
 error_nonexisting_gallery		= Die Galerie "{PARAM1}" existiert nicht.

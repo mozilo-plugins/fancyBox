@@ -7,9 +7,20 @@
 }
 
 .fancyBoxError {
-	padding: 4px;
+	display: table;
 	margin: 2px 0;
-	border: 1px solid red;
-	color: red;
-	background-color: #fdd;
+	border: 1px solid #f66;
+	background-color: #fee;
+}
+.fancyBoxError div {
+	display: table-cell;
+	padding: 2px 6px;
+	color: white;
+	background-color: #f66;
+	height: inherit;
+}
+.fancyBoxError span {
+	display: table-cell;
+	padding: 2px 4px;
+	color: #f66;
 }

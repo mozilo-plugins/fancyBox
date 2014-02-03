@@ -1,3 +1,4 @@
+error							= Error
 error_param_type				= An invalid type has been entered. Allowed values are "image", "inline" and "link".
 error_no_image_param			= No gallery or picture has been entered. At least one is required.
 error_nonexisting_gallery		= Gallery "{PARAM1}" does not exist.
