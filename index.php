@@ -3,7 +3,7 @@
 /**
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
- * @version: v0.0.2014-01-31
+ * @version: v0.1.2014-02-04
  * @license: GPL v3
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
@@ -22,7 +22,7 @@ class fancyBox extends Plugin {
 	const plugin_author = 'HPdesigner';
 	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
 	const plugin_title = 'fancyBox';
-	const plugin_version = 'v0.0.2014-01-31';
+	const plugin_version = 'v0.1.2014-02-04';
 	const mozilo_version = '2.0';
 	private $plugin_tags = array(
 		'image' => '{fancyBox|image|<gallery>|<file>}',
@@ -45,6 +45,7 @@ class fancyBox extends Plugin {
 		'minheight'			=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
 		'maxwidth'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
 		'maxheight'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'thumbwidth'		=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
 		'autosize'			=> array('true',false,'# : |,','check'),
 		'autoresize'		=> array('!isTouch',false,'# : |,','check'),
 		'autocenter'		=> array('!isTouch',false,'# : |,','check'),
@@ -181,7 +182,7 @@ class fancyBox extends Plugin {
 				// build image path
 				$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
 				// build single image tag
-				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['minwidth'][0], $conf['minheight'][0]);
+				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['thumbwidth'][0]);
 			}
 		}
 		else if ($param_typ == 'inline') {
@@ -255,17 +256,20 @@ class fancyBox extends Plugin {
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_dimension') . '</div>
-				<div style="width:32%;display:inline-block;vertical-align:top;">
+				<div style="width:24%;display:inline-block;vertical-align:top;">
 					<div style="margin-bottom:5px;">{width_text} {width_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['width'][0] .']</span></div>
 					<div style="margin-bottom:5px;">{height_text} {height_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['height'][0] .']</span></div>
 				</div>
-				<div style="width:32%;display:inline-block;vertical-align:top;">
+				<div style="width:24%;display:inline-block;vertical-align:top;">
 					<div style="margin-bottom:5px;">{minwidth_text} {minwidth_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['minwidth'][0] .']</span></div>
 					<div style="margin-bottom:5px;">{minheight_text} {minheight_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['minheight'][0] .']</span></div>
 				</div>
-				<div style="width:32%;display:inline-block;vertical-align:top;">
+				<div style="width:24%;display:inline-block;vertical-align:top;">
 					<div style="margin-bottom:5px;">{maxwidth_text} {maxwidth_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['maxwidth'][0] .']</span></div>
 					<div style="margin-bottom:5px;">{maxheight_text} {maxheight_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['maxheight'][0] .']</span></div>
+				</div>
+				<div style="width:24%;display:inline-block;vertical-align:top;">
+					<div style="margin-bottom:5px;">{thumbwidth_text} {thumbwidth_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['thumbwidth'][0] .']</span></div>
 				</div>
 			</li>
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
@@ -342,7 +346,7 @@ class fancyBox extends Plugin {
 	}
 
 
-	protected function buildImgTag($class, $rel, $href, $src, $title='', $minwidth='', $minheight='') {
+	protected function buildImgTag($class, $rel, $href, $src, $title='', $width='') {
 		$html .= '<a ';
 		$html .= 	'class="' . self::plugin_title . ' ' . $class . '" ';
 		$html .= 	'rel="' . $rel . '" ';
@@ -350,8 +354,7 @@ class fancyBox extends Plugin {
 		if ($title != '') $html .= 	'title="' . $title . '" ';
 		$html .= '>';
 		$html .= 	'<img src="' . $src .'" ';
-		if ($minwidth != '') $html .= 'width="' . $minwidth . '" ';
-		if ($minheight != '') $html .= 'height="' . $minheight . '" ';
+		if ($width != '') $html .= 'width="' . $width . '" ';
 		$html .= ' />';
 		$html .= '</a>';
 		return $html;
