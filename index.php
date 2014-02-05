@@ -78,17 +78,14 @@ class fancyBox extends Plugin {
 		global $syntax;
 		global $CatPage;
 		// initialize mozilo gallery
-		include_once($BASE_DIR . 'cms/' . 'GalleryClass.php');
+		include_once(BASE_DIR . 'cms/' . 'GalleryClass.php');
 		$this->gallery = new GalleryClass();
 		$this->gallery->initial_Galleries(false,false,false,true);
 
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
 		// get params
-		$values = explode('|', $value);
-		$param_typ = trim($values[0]);
-		$param_gal = trim($values[1]);
-		$param_img = trim($values[2]);
+		list($param_typ,$param_gal,$param_img) = $this->makeUserParaArray($value,false,"|");
 
 		// get conf and set default
 		$conf = array();
@@ -176,11 +173,9 @@ class fancyBox extends Plugin {
 
 			// no gallery but image specified: load single image from files
 			if (!$is_gallery and $param_img != '') {
-				$param_img = explode('%3A', $param_img);
-				$param_cat = urlencode($param_img[0]);
-				$param_file = $param_img[1];
+				list($param_cat,$param_file) = $CatPage->split_CatPage_fromSyntax($param_img, true);
 				// build image path
-				$path_img =  URL_BASE .'kategorien/' . $param_cat . '/dateien/' . $param_file;
+				$path_img = $CatPage->get_srcFile( $param_cat, $param_file);
 				// build single image tag
 				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['thumbwidth'][0]);
 			}
