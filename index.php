@@ -98,10 +98,10 @@ class fancyBox extends Plugin {
 
 		// validate conf
 		$conf['backgroundcolor'] = array(
-			$this->settings->get('backgroundred') . ', ' . 
-			$this->settings->get('backgroundgreen') . ', ' . 
-			$this->settings->get('backgroundblue') . ', ' . 
-			$this->settings->get('backgroundalpha'),
+			$conf['backgroundred'][0] . ', ' . 
+			$conf['backgroundgreen'][0] . ', ' . 
+			$conf['backgroundblue'][0] . ', ' . 
+			$conf['backgroundalpha'][0],
 			false,
 			'helpers : { overlay : { css : { "background" : "rgba(|)" } } },',
 		);
