@@ -169,7 +169,7 @@ class fancyBox extends Plugin {
 				$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
 				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
 				// build single image tag
-				$class = $class . '_' . $param_gal;
+				$class = $class . '_' . str_replace('%20', '_', $param_gal);
 				$title = $this->gallery->get_ImageDescription($param_gal, $param_img, 'html');
 				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
 			}
@@ -198,7 +198,7 @@ class fancyBox extends Plugin {
 			// build link
 			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
 		} else {
-			return $this->throwError($this->cms_lang->getLanguageValue('error_param_typ'));
+			return $this->throwError($this->cms_lang->getLanguageValue('error_param_type'));
 		}
 
 		// attach fancyBox
