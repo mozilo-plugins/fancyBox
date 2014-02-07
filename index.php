@@ -69,6 +69,7 @@ class fancyBox extends Plugin {
 		'closespeed'		=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 		'nextspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
 		'prevspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'titlepos'			=> array('default',false,'helpers : { title : { type : "|" },','select',array('default','over','inside','outside','none'),false),
 	);
 
 
@@ -94,13 +95,12 @@ class fancyBox extends Plugin {
 
 		// validate conf
 		$conf['backgroundcolor'] = array(
-			$conf['backgroundred'][0] . ', ' . 
-			$conf['backgroundgreen'][0] . ', ' . 
-			$conf['backgroundblue'][0] . ', ' . 
-			$conf['backgroundalpha'][0],
+			$conf['backgroundred'][0] . ', ' . $conf['backgroundgreen'][0] . ', ' . $conf['backgroundblue'][0] . ', ' . $conf['backgroundalpha'][0],
 			false,
-			'helpers : { overlay : { css : { "background" : "rgba(|)" } } },',
+			'overlay : { css : { "background" : "rgba(|)" } } },',
 		);
+		if ($conf['titlepos'][0] == 'default') $conf['titlepos'][2] = 'helpers : { ';
+		$no_title = $conf['titlepos'][0] == 'none';
 
 		// delete partial conf elements, contents are now in 'backgroundcolor'
 		unset($conf['backgroundred'], $conf['backgroundgreen'], $conf['backgroundblue'], $conf['backgroundalpha']);
@@ -165,7 +165,7 @@ class fancyBox extends Plugin {
 					// build image paths
 					$path_img = $this->gallery->get_ImageSrc($param1, $image, false);
 					$path_thumb = $this->gallery->get_ImageSrc($param1, $image, true);
-					$title = $this->gallery->get_ImageDescription($param1, $image, 'html');
+					$title = $no_title ? '' : $this->gallery->get_ImageDescription($param1, $image, 'html');
 					$content .= $this->buildImgTag($class, $param1, $path_img, $path_thumb, $title);
 				}
 
@@ -179,7 +179,7 @@ class fancyBox extends Plugin {
 				$path_thumb = $this->gallery->get_ImageSrc($param1, $param2, true);
 				// build class and title
 				$class = $class . '_' . str_replace('%20', '_', $param1);
-				$title = $this->gallery->get_ImageDescription($param1, $param2, 'html');
+				$title = $no_title ? '' : $this->gallery->get_ImageDescription($param1, $param2, 'html');
 
 				// build remote link and hide image
 				if ($is_remote) {
@@ -217,11 +217,13 @@ class fancyBox extends Plugin {
 			// build inline content
 			$content .= '<div id="' . $id . '" style="display:none;">' . $param2 . '</div>';
 			// build link
+			if ($no_title) $param3 = '';
 			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '" title="' . $param3 . '"> ' . $param1 . '</a>';
 		}
 		else if ($param_typ == 'link') {
 			$class = $class . '_link';
 			// build link
+			if ($no_title) $param3 = '';
 			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param2 . '" title="' . $param3 . '"> ' . $param1 . '</a>';
 		} else {
 			return $this->throwError($this->cms_lang->getLanguageValue('error_param_type'));
@@ -233,7 +235,7 @@ class fancyBox extends Plugin {
 
 		foreach ($conf as $key => $value)
 			$fancyjs .= $this->wrap($key, $value[0], $value[1], $value[2]);
-		
+
 		// fancyBox template
 		$fancyjs .= 'tpl : {
 			error : \'<p class="fancybox-error">' . $this->cms_lang->getLanguageValue('fancy_error') . '</p>\',
@@ -261,7 +263,7 @@ class fancyBox extends Plugin {
 				case 'check': $config[$key] = $this->confCheck($this->admin_lang->getLanguageValue('config_' . $key)); break;
 				case 'select': 
 					$descriptions = array();
-					foreach ($value[4] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $desc);
+					foreach ($value[4] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $key . '_' . $desc);
 					$config[$key] = $this->confSelect($this->admin_lang->getLanguageValue('config_' . $key),$descriptions,$value[5]); break;
 				default: break;
 			}
@@ -327,6 +329,9 @@ class fancyBox extends Plugin {
 				<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['closeclick'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['nextclick'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{mousewheel_checkbox} {mousewheel_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['mousewheel'][0] .']</span></div>
+			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_title') . '</div>
+				<div style="width:32%;display:inline-block;margin-right:5px;">{titlepos_select}</div> {titlepos_description}
 			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_slides') . '</div>
 				<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['autoplay'][0] .']</span></div>

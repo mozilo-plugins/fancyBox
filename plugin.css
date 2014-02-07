@@ -2,10 +2,17 @@
 	fancyBox CSS styles
 */
 
+/* thmubs */
 .fancyBox img {
 	margin: 10px 10px 0 0;
 }
 
+/* border color */
+.fancybox-skin {
+	background: #fff;
+}
+
+/* error */
 .fancyBoxError {
 	display: table;
 	margin: 2px 0;
