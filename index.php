@@ -25,7 +25,7 @@ class fancyBox extends Plugin {
 	const plugin_version = 'v0.1.2014-02-04';
 	const mozilo_version = '2.0';
 	private $plugin_tags = array(
-		'image' => '{fancyBox|image|<gallery>|<file>}',
+		'image' => '{fancyBox|image|<gallery>|<file>|<remote>}',
 		'inline' => '{fancyBox|inline|<text>|<content>}',
 		'link' => '{fancyBox|link|<text>|<url>}',
 	);
@@ -85,7 +85,7 @@ class fancyBox extends Plugin {
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
 		// get params
-		list($param_typ,$param_gal,$param_img,$param_rem) = $this->makeUserParaArray($value,false,"|");
+		list($param_typ,$param1,$param2,$param3) = $this->makeUserParaArray($value,false,"|");
 
 		// get conf and set default
 		$conf = array();
@@ -119,29 +119,29 @@ class fancyBox extends Plugin {
 		$class = 'fancybox';
 
 		// check if gallery or image should be launched by remote link
-		$is_remote = trim($param_rem != '');
+		$is_remote = trim($param3 != '');
 
 		if ($param_typ == 'image' or $is_remote) {
 			$class = $class . '_image';
 			// check wether gallery exists
 			$is_gallery = false;
 			$is_image = false;
-			if ($param_gal != '') {
-				if (!in_array($param_gal, $this->gallery->get_GalleriesArray()))
-					return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery',$param_gal));
+			if ($param1 != '') {
+				if (!in_array($param1, $this->gallery->get_GalleriesArray()))
+					return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery',$param1));
 				else
 					$is_gallery = true;
 			}
 			// check wether image exists
 			if ($is_gallery) {
-				if ($param_img != '') {
-					if (!in_array($param_img, $this->gallery->get_GalleryImagesArray($param_gal))) {
-						return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery_image',$param_img));
+				if ($param2 != '') {
+					if (!in_array($param2, $this->gallery->get_GalleryImagesArray($param1))) {
+						return $this->throwError($this->cms_lang->getLanguageValue('error_nonexisting_gallery_image',$param2));
 					} else
 						$is_image = true;
 				}
 			} else {
-				if ($param_img != '') {
+				if ($param2 != '') {
 					// TODO: check image in files
 				} else
 					// no gallery and no image specified: throw error message
@@ -149,13 +149,13 @@ class fancyBox extends Plugin {
 			}
 
 			// gallery with no image specified: load whole gallery
-			if ($is_gallery and $param_img == '') {
-				$images = $this->gallery->get_GalleryImagesArray($param_gal);
-				$class = $class . '_' . str_replace('%20', '_', $param_gal);
+			if ($is_gallery and $param2 == '') {
+				$images = $this->gallery->get_GalleryImagesArray($param1);
+				$class = $class . '_' . str_replace('%20', '_', $param1);
 
 				// build remote link and hide gallery
 				if ($is_remote) {
-					$content .= '<a href="' . $this->gallery->get_ImageSrc($param_gal, $images[0], false) . '" rel="' . $param_gal . '" class="' . $class . '">' . $param_rem . '</a>';
+					$content .= '<a href="' . $this->gallery->get_ImageSrc($param1, $images[0], false) . '" rel="' . $param1 . '" class="' . $class . '">' . $param3 . '</a>';
 					unset($images[0]);
 					$content .= '<div style="display:none;">';
 				}
@@ -163,45 +163,45 @@ class fancyBox extends Plugin {
 				// build image tag for every image
 				foreach ($images as $image) {
 					// build image paths
-					$path_img = $this->gallery->get_ImageSrc($param_gal, $image, false);
-					$path_thumb = $this->gallery->get_ImageSrc($param_gal, $image, true);
-					$title = $this->gallery->get_ImageDescription($param_gal, $image, 'html');
-					$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
+					$path_img = $this->gallery->get_ImageSrc($param1, $image, false);
+					$path_thumb = $this->gallery->get_ImageSrc($param1, $image, true);
+					$title = $this->gallery->get_ImageDescription($param1, $image, 'html');
+					$content .= $this->buildImgTag($class, $param1, $path_img, $path_thumb, $title);
 				}
 
 				if ($is_remote) $content .= '</div>';
 			}
 
 			// gallery with image specified: load single image from gallery
-			if ($is_gallery and $param_img != '') {
+			if ($is_gallery and $param2 != '') {
 				// build image paths
-				$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
-				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
+				$path_img = $this->gallery->get_ImageSrc($param1, $param2, false);
+				$path_thumb = $this->gallery->get_ImageSrc($param1, $param2, true);
 				// build class and title
-				$class = $class . '_' . str_replace('%20', '_', $param_gal);
-				$title = $this->gallery->get_ImageDescription($param_gal, $param_img, 'html');
+				$class = $class . '_' . str_replace('%20', '_', $param1);
+				$title = $this->gallery->get_ImageDescription($param1, $param2, 'html');
 
 				// build remote link and hide image
 				if ($is_remote) {
-					$content .= '<a href="' . $path_img . '" rel="' . $param_gal . '" class="' . $class . '">' . $param_rem . '</a>';
+					$content .= '<a href="' . $path_img . '" rel="' . $param1 . '" class="' . $class . '">' . $param3 . '</a>';
 					$content .= '<div style="display:none;">';
 				}
 
 				// build single image tag
-				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
+				$content .= $this->buildImgTag($class, $param1, $path_img, $path_thumb, $title);
 
 				if ($is_remote) $content .= '</div>';
 			}
 
 			// no gallery but image specified: load single image from files
-			if (!$is_gallery and $param_img != '') {
-				list($param_cat,$param_file) = $CatPage->split_CatPage_fromSyntax($param_img, true);
+			if (!$is_gallery and $param2 != '') {
+				list($param_cat,$param_file) = $CatPage->split_CatPage_fromSyntax($param2, true);
 				// build image path
 				$path_img = $CatPage->get_srcFile($param_cat, $param_file);
 
 				// build remote link and hide image
 				if ($is_remote) {
-					$content .= '<a href="' . $path_img . '" rel="' . $param_cat . '" class="' . $class . '">' . $param_rem . '</a>';
+					$content .= '<a href="' . $path_img . '" rel="' . $param_cat . '" class="' . $class . '">' . $param3 . '</a>';
 					$content .= '<div style="display:none;">';
 				}
 
@@ -215,14 +215,14 @@ class fancyBox extends Plugin {
 			$class = $class . '_inline';
 			$id = rand();
 			// build inline content
-			$content .= '<div id="' . $id . '" style="display:none;">' . $param_img . '</div>';
+			$content .= '<div id="' . $id . '" style="display:none;">' . $param2 . '</div>';
 			// build link
-			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '"> ' . $param_gal . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '"> ' . $param1 . '</a>';
 		}
 		else if ($param_typ == 'link') {
 			$class = $class . '_link';
 			// build link
-			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param_img . '"> ' . $param_gal . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param2 . '"> ' . $param1 . '</a>';
 		} else {
 			return $this->throwError($this->cms_lang->getLanguageValue('error_param_type'));
 		}
