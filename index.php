@@ -85,7 +85,7 @@ class fancyBox extends Plugin {
 		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
 		// get params
-		list($param_typ,$param_gal,$param_img) = $this->makeUserParaArray($value,false,"|");
+		list($param_typ,$param_gal,$param_img,$param_rem) = $this->makeUserParaArray($value,false,"|");
 
 		// get conf and set default
 		$conf = array();
@@ -118,7 +118,10 @@ class fancyBox extends Plugin {
 		$content = '<!-- BEGIN fancyBox plugin content --> ';
 		$class = 'fancybox';
 
-		if ($param_typ == 'image') {
+		// check if gallery or image should be launched by remote link
+		$is_remote = trim($param_rem != '');
+
+		if ($param_typ == 'image' or $is_remote) {
 			$class = $class . '_image';
 			// check wether gallery exists
 			$is_gallery = false;
@@ -149,6 +152,14 @@ class fancyBox extends Plugin {
 			if ($is_gallery and $param_img == '') {
 				$images = $this->gallery->get_GalleryImagesArray($param_gal);
 				$class = $class . '_' . str_replace('%20', '_', $param_gal);
+
+				// build remote link and hide gallery
+				if ($is_remote) {
+					$content .= '<a href="' . $this->gallery->get_ImageSrc($param_gal, $images[0], false) . '" rel="' . $param_gal . '" class="' . $class . '">' . $param_rem . '</a>';
+					unset($images[0]);
+					$content .= '<div style="display:none;">';
+				}
+
 				// build image tag for every image
 				foreach ($images as $image) {
 					// build image paths
@@ -157,6 +168,8 @@ class fancyBox extends Plugin {
 					$title = $this->gallery->get_ImageDescription($param_gal, $image, 'html');
 					$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
 				}
+
+				if ($is_remote) $content .= '</div>';
 			}
 
 			// gallery with image specified: load single image from gallery
@@ -164,10 +177,20 @@ class fancyBox extends Plugin {
 				// build image paths
 				$path_img = $this->gallery->get_ImageSrc($param_gal, $param_img, false);
 				$path_thumb = $this->gallery->get_ImageSrc($param_gal, $param_img, true);
-				// build single image tag
+				// build class and title
 				$class = $class . '_' . str_replace('%20', '_', $param_gal);
 				$title = $this->gallery->get_ImageDescription($param_gal, $param_img, 'html');
+
+				// build remote link and hide image
+				if ($is_remote) {
+					$content .= '<a href="' . $path_img . '" rel="' . $param_gal . '" class="' . $class . '">' . $param_rem . '</a>';
+					$content .= '<div style="display:none;">';
+				}
+
+				// build single image tag
 				$content .= $this->buildImgTag($class, $param_gal, $path_img, $path_thumb, $title);
+
+				if ($is_remote) $content .= '</div>';
 			}
 
 			// no gallery but image specified: load single image from files
@@ -175,8 +198,17 @@ class fancyBox extends Plugin {
 				list($param_cat,$param_file) = $CatPage->split_CatPage_fromSyntax($param_img, true);
 				// build image path
 				$path_img = $CatPage->get_srcFile($param_cat, $param_file);
+
+				// build remote link and hide image
+				if ($is_remote) {
+					$content .= '<a href="' . $path_img . '" rel="' . $param_cat . '" class="' . $class . '">' . $param_rem . '</a>';
+					$content .= '<div style="display:none;">';
+				}
+
 				// build single image tag
 				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['thumbwidth'][0]);
+
+				if ($is_remote) $content .= '</div>';
 			}
 		}
 		else if ($param_typ == 'inline') {
