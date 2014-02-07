@@ -31,45 +31,45 @@ class fancyBox extends Plugin {
 	);
 	
 	// set configuration elements, their default values and their configuration parameters
-	// element => default, toquote, wrap (# -> key, | -> value), type, maxlength/descriptions, size/multiselect, regex
+	// element => default, wrap (# -> key, | -> value), type, maxlength/descriptions, size/multiselect, regex
 	private $confdefault = array(
-		'backgroundred'		=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
-		'backgroundgreen'	=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
-		'backgroundblue'	=> array('0',false,'','text','','3',"/^[0-9]{1,3}$/"),
-		'backgroundalpha'	=> array('0.5',false,'','text','','3',''), // TODO: regex float
-		'padding'			=> array('15',false,'# : |,','text','','3',"/^[0-9]{1,3}$/"),
-		'margin'			=> array('20',false,'# : |,','text','','3',"/^[0-9]{1,3}$/"),
-		'width'				=> array('800',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'height'			=> array('600',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'minwidth'			=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'minheight'			=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'maxwidth'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'maxheight'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'thumbwidth'		=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
-		'autosize'			=> array('true',false,'# : |,','check'),
-		'autoresize'		=> array('!isTouch',true,'# : |,','check'),
-		'autocenter'		=> array('!isTouch',true,'# : |,','check'),
-		'fittoview'			=> array('true',false,'# : |,','check'),
-		'scrolling'			=> array('auto',true,'# : |,','select',array('auto','yes','no','visible'),false),
-		'wrapcss'			=> array('',true,'# : |,','text','','',''),
-		'arrows'			=> array('true',false,'# : |,','check'),
-		'closebtn'			=> array('true',false,'# : |,','check'),
-		'closeclick'		=> array('false',false,'# : |,','check'),
-		'nextclick'			=> array('false',false,'# : |,','check'),
-		'mousewheel'		=> array('true',false,'# : |,','check'),
-		'autoplay'			=> array('false',false,'# : |,','check'),
-		'playspeed'			=> array('3000',false,'# : |,','text','','3',"/^[0-9]{1,5}$/"),
-		'preload'			=> array('3',false,'# : |,','text','','3',"/^[0-9]{1,2}$/"),
-		'loop'				=> array('true',false,'# : |,','check'),
-		'openeffect'		=> array('fade',true,'# : |,','select',array('fade','elastic','none'),false),
-		'closeeffect'		=> array('fade',true,'# : |,','select',array('fade','elastic','none'),false),
-		'nexteffect'		=> array('elastic',true,'# : |,','select',array('fade','elastic','none'),false),
-		'preveffect'		=> array('elastic',true,'# : |,','select',array('fade','elastic','none'),false),
-		'openspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
-		'closespeed'		=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
-		'nextspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
-		'prevspeed'			=> array('250',false,'# : |,','text','','',"/^[0-9]{1,4}$/"),
-		'titlepos'			=> array('default',false,'helpers : { title : { type : "|" },','select',array('default','over','inside','outside','none'),false),
+		'backgroundred'		=> array('0','','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundgreen'	=> array('0','','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundblue'	=> array('0','','text','','3',"/^[0-9]{1,3}$/"),
+		'backgroundalpha'	=> array('0.5','','text','','3',''), // TODO: regex float
+		'padding'			=> array('15','# : |,','text','','3',"/^[0-9]{1,3}$/"),
+		'margin'			=> array('20','# : |,','text','','3',"/^[0-9]{1,3}$/"),
+		'width'				=> array('800','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'height'			=> array('600','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'minwidth'			=> array('100','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'minheight'			=> array('100','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'maxwidth'			=> array('9999','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'maxheight'			=> array('9999','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'thumbwidth'		=> array('100','# : |,','text','','3',"/^[0-9]{1,4}$/"),
+		'autosize'			=> array('true','# : |,','check'),
+		'autoresize'		=> array('!isTouch','# : "|",','check'),
+		'autocenter'		=> array('!isTouch','# : "|",','check'),
+		'fittoview'			=> array('true','# : |,','check'),
+		'scrolling'			=> array('auto','# : "|",','select',array('auto','yes','no','visible'),false),
+		'wrapcss'			=> array('','# : "|",','text','','',''),
+		'arrows'			=> array('true','# : |,','check'),
+		'closebtn'			=> array('true','# : |,','check'),
+		'closeclick'		=> array('false','# : |,','check'),
+		'nextclick'			=> array('false','# : |,','check'),
+		'mousewheel'		=> array('true','# : |,','check'),
+		'autoplay'			=> array('false','# : |,','check'),
+		'playspeed'			=> array('3000','# : |,','text','','3',"/^[0-9]{1,5}$/"),
+		'preload'			=> array('3','# : |,','text','','3',"/^[0-9]{1,2}$/"),
+		'loop'				=> array('true','# : |,','check'),
+		'openeffect'		=> array('fade','# : "|",','select',array('fade','elastic','none'),false),
+		'closeeffect'		=> array('fade','# : "|",','select',array('fade','elastic','none'),false),
+		'nexteffect'		=> array('elastic','# : "|",','select',array('fade','elastic','none'),false),
+		'preveffect'		=> array('elastic','# : "|",','select',array('fade','elastic','none'),false),
+		'openspeed'			=> array('250','# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'closespeed'		=> array('250','# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'nextspeed'			=> array('250','# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'prevspeed'			=> array('250','# : |,','text','','',"/^[0-9]{1,4}$/"),
+		'titlepos'			=> array('default','helpers : { title : { type : "|" },','select',array('default','over','inside','outside','none'),false),
 	);
 
 
@@ -91,15 +91,14 @@ class fancyBox extends Plugin {
 		// get conf and set default
 		$conf = array();
 		foreach ($this->confdefault as $elem => $default)
-			$conf[$elem] = array(($this->settings->get($elem) == '') ? $default[0] : $this->settings->get($elem),$default[1],$default[2]);
+			$conf[$elem] = array(($this->settings->get($elem) == '') ? $default[0] : $this->settings->get($elem),$default[1]);
 
 		// validate conf
 		$conf['backgroundcolor'] = array(
 			$conf['backgroundred'][0] . ', ' . $conf['backgroundgreen'][0] . ', ' . $conf['backgroundblue'][0] . ', ' . $conf['backgroundalpha'][0],
-			false,
 			'overlay : { css : { "background" : "rgba(|)" } } },',
 		);
-		if ($conf['titlepos'][0] == 'default') $conf['titlepos'][2] = 'helpers : { ';
+		if ($conf['titlepos'][0] == 'default') $conf['titlepos'][1] = 'helpers : { ';
 		$no_title = $conf['titlepos'][0] == 'none';
 
 		// delete partial conf elements, contents are now in 'backgroundcolor'
@@ -234,7 +233,7 @@ class fancyBox extends Plugin {
 		$fancyjs .= '<script type="text/javascript"> $(document).ready(function() { $(".' . $class . '").fancybox({';
 
 		foreach ($conf as $key => $value)
-			$fancyjs .= $this->wrap($key, $value[0], $value[1], $value[2]);
+			$fancyjs .= $this->wrap($key, $value[0], $value[1]);
 
 		// fancyBox template
 		$fancyjs .= 'tpl : {
@@ -258,13 +257,13 @@ class fancyBox extends Plugin {
 
 		// read config values
 		foreach ($this->confdefault as $key => $value) {
-			switch ($value[3]) {
-				case 'text': $config[$key] = $this->confText($this->admin_lang->getLanguageValue('config_' . $key), $value[4], $value[5], $value[6], $this->admin_lang->getLanguageValue('config_' . $key . '_error')); break;
+			switch ($value[2]) {
+				case 'text': $config[$key] = $this->confText($this->admin_lang->getLanguageValue('config_' . $key), $value[3], $value[4], $value[5], $this->admin_lang->getLanguageValue('config_' . $key . '_error')); break;
 				case 'check': $config[$key] = $this->confCheck($this->admin_lang->getLanguageValue('config_' . $key)); break;
 				case 'select': 
 					$descriptions = array();
-					foreach ($value[4] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $key . '_' . $desc);
-					$config[$key] = $this->confSelect($this->admin_lang->getLanguageValue('config_' . $key),$descriptions,$value[5]); break;
+					foreach ($value[3] as $desc) $descriptions[$desc] = $this->admin_lang->getLanguageValue('config_' . $key . '_' . $desc);
+					$config[$key] = $this->confSelect($this->admin_lang->getLanguageValue('config_' . $key),$descriptions,$value[4]); break;
 				default: break;
 			}
 		}
@@ -439,8 +438,7 @@ class fancyBox extends Plugin {
 		);
 	}
 
-	protected function wrap($key, $value, $toquote, $wrap) {
-		if ($toquote) $value = '"' . $value . '"';
+	protected function wrap($key, $value, $wrap) {
 		$wrapped = str_replace(array('#','|'), array($key, $value), $wrap);
 		return $wrapped;
 	}
