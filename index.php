@@ -233,6 +233,14 @@ class fancyBox extends Plugin {
 
 		foreach ($conf as $key => $value)
 			$fancyjs .= $this->wrap($key, $value[0], $value[1], $value[2]);
+		
+		// fancyBox template
+		$fancyjs .= 'tpl : {
+			error : \'<p class="fancybox-error">' . $this->cms_lang->getLanguageValue('fancy_error') . '</p>\',
+			closeBtn : \'<a title="' . $this->cms_lang->getLanguageValue('fancy_close') . '" class="fancybox-item fancybox-close" href="javascript:;"></a>\',
+			next : \'<a title="' . $this->cms_lang->getLanguageValue('fancy_next') . '" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>\',
+			prev : \'<a title="' . $this->cms_lang->getLanguageValue('fancy_prev') . '" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>\'
+		}';
 
 		$fancyjs .=	'});});</script>';
 		$syntax->insert_in_head($fancyjs);

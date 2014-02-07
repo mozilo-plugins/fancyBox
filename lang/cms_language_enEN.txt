@@ -3,3 +3,7 @@ error_param_type				= An invalid type has been entered. Allowed values are "imag
 error_no_image_param			= No gallery or picture has been entered. At least one is required.
 error_nonexisting_gallery		= Gallery "{PARAM1}" does not exist.
 error_nonexisting_gallery_image	= Picture "{PARAM1}" does not exist in given gallery.
+fancy_error						= The requested content cannot be loaded.<br/>Please try again later.
+fancy_close						= Close
+fancy_next						= Next
+fancy_prev						= Previous

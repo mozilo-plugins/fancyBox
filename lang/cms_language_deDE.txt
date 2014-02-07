@@ -3,3 +3,7 @@ error_param_type				= Es wurde ein ungültiger Typ angegeben. Erlaubte Werte sin
 error_no_image_param			= Es wurde weder eine Gallerie, noch ein Bild angegeben. Mindestens eine Angabe muss gemacht werden.
 error_nonexisting_gallery		= Die Galerie "{PARAM1}" existiert nicht.
 error_nonexisting_gallery_image	= Das Bild "{PARAM1}" existiert nicht in der angegebenen Galerie.
+fancy_error						= Der angeforderte Inhalt konnte nicht geladen werden.<br/>Bitt später erneut probieren.
+fancy_close						= Schließen
+fancy_next						= Weiter
+fancy_prev						= Zurück
