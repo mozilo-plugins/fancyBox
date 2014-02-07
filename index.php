@@ -47,8 +47,8 @@ class fancyBox extends Plugin {
 		'maxheight'			=> array('9999',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
 		'thumbwidth'		=> array('100',false,'# : |,','text','','3',"/^[0-9]{1,4}$/"),
 		'autosize'			=> array('true',false,'# : |,','check'),
-		'autoresize'		=> array('!isTouch',false,'# : |,','check'),
-		'autocenter'		=> array('!isTouch',false,'# : |,','check'),
+		'autoresize'		=> array('!isTouch',true,'# : |,','check'),
+		'autocenter'		=> array('!isTouch',true,'# : |,','check'),
 		'fittoview'			=> array('true',false,'# : |,','check'),
 		'scrolling'			=> array('auto',true,'# : |,','select',array('auto','yes','no','visible'),false),
 		'wrapcss'			=> array('',true,'# : |,','text','','',''),
@@ -78,7 +78,7 @@ class fancyBox extends Plugin {
 		global $syntax;
 		global $CatPage;
 		// initialize mozilo gallery
-		include_once(BASE_DIR . 'cms/' . 'GalleryClass.php');
+		include_once(BASE_DIR_CMS . 'GalleryClass.php');
 		$this->gallery = new GalleryClass();
 		$this->gallery->initial_Galleries(false,false,false,true);
 
@@ -89,9 +89,8 @@ class fancyBox extends Plugin {
 
 		// get conf and set default
 		$conf = array();
-		foreach ($this->confdefault as $elem => $default) {
+		foreach ($this->confdefault as $elem => $default)
 			$conf[$elem] = array(($this->settings->get($elem) == '') ? $default[0] : $this->settings->get($elem),$default[1],$default[2]);
-		}
 
 		// validate conf
 		$conf['backgroundcolor'] = array(
@@ -110,10 +109,10 @@ class fancyBox extends Plugin {
 		$syntax->insert_jquery_in_head('jquery');
 		// add mousewheel plugin (optional)
 		if($conf['mousewheel'][0] == 'true')
-			$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/lib/jquery.mousewheel.pack.js"></script>');
+			$syntax->insert_in_head('<script type="text/javascript" src="' . $this->PLUGIN_SELF_URL . 'lib/jquery.mousewheel.pack.js"></script>');
 		// add fancyBox
-		$syntax->insert_in_head('<link rel="stylesheet" href="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.css" type="text/css" media="screen" />');
-		$syntax->insert_in_head('<script type="text/javascript" src="' . URL_BASE . PLUGIN_DIR_NAME . '/fancyBox/source/jquery.fancybox.pack.js"></script>');
+		$syntax->insert_in_head('<link rel="stylesheet" href="' . $this->PLUGIN_SELF_URL . 'source/jquery.fancybox.css" type="text/css" media="screen" />');
+		$syntax->insert_in_head('<script type="text/javascript" src="' . $this->PLUGIN_SELF_URL . 'source/jquery.fancybox.pack.js"></script>');
 
 		// initialize return content and default class
 		$content = '<!-- BEGIN fancyBox plugin content --> ';
@@ -175,7 +174,7 @@ class fancyBox extends Plugin {
 			if (!$is_gallery and $param_img != '') {
 				list($param_cat,$param_file) = $CatPage->split_CatPage_fromSyntax($param_img, true);
 				// build image path
-				$path_img = $CatPage->get_srcFile( $param_cat, $param_file);
+				$path_img = $CatPage->get_srcFile($param_cat, $param_file);
 				// build single image tag
 				$content .= $this->buildImgTag($class, $param_cat, $path_img, $path_img, '', $conf['thumbwidth'][0]);
 			}
@@ -309,14 +308,22 @@ class fancyBox extends Plugin {
 		';
 
 		return $config;
-	}  
+	}
+
+	function getDefaultSettings() {
+		$def_set = array('active' => 'true');
+		foreach ($this->confdefault as $elem => $default) {
+			$def_set[$elem] = $default[0];
+		}
+		return $def_set;
+	}
 
 
 	function getInfo() {
 
 		global $ADMIN_CONF;
 
-		$this->admin_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/admin_language_' . $ADMIN_CONF->get('language') . '.txt');
+		$this->admin_lang = new Language($this->PLUGIN_SELF_DIR . 'lang/admin_language_' . $ADMIN_CONF->get('language') . '.txt');
 
 		// build plugin tags
 		$tags = array();
@@ -342,7 +349,7 @@ class fancyBox extends Plugin {
 
 
 	protected function buildImgTag($class, $rel, $href, $src, $title='', $width='') {
-		$html .= '<a ';
+		$html = '<a ';
 		$html .= 	'class="' . self::plugin_title . ' ' . $class . '" ';
 		$html .= 	'rel="' . $rel . '" ';
 		$html .= 	'href="' . $href . '" ';
