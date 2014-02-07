@@ -26,8 +26,8 @@ class fancyBox extends Plugin {
 	const mozilo_version = '2.0';
 	private $plugin_tags = array(
 		'image' => '{fancyBox|image|<gallery>|<file>|<remote>}',
-		'inline' => '{fancyBox|inline|<text>|<content>}',
-		'link' => '{fancyBox|link|<text>|<url>}',
+		'inline' => '{fancyBox|inline|<text>|<content>|<title>}',
+		'link' => '{fancyBox|link|<text>|<url>|<title>}',
 	);
 	
 	// set configuration elements, their default values and their configuration parameters
@@ -119,9 +119,9 @@ class fancyBox extends Plugin {
 		$class = 'fancybox';
 
 		// check if gallery or image should be launched by remote link
-		$is_remote = trim($param3 != '');
+		$is_remote = trim($param_typ == 'image' and $param3 != '');
 
-		if ($param_typ == 'image' or $is_remote) {
+		if ($param_typ == 'image') {
 			$class = $class . '_image';
 			// check wether gallery exists
 			$is_gallery = false;
@@ -217,12 +217,12 @@ class fancyBox extends Plugin {
 			// build inline content
 			$content .= '<div id="' . $id . '" style="display:none;">' . $param2 . '</div>';
 			// build link
-			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '"> ' . $param1 . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . '" href="#' . $id . '" title="' . $param3 . '"> ' . $param1 . '</a>';
 		}
 		else if ($param_typ == 'link') {
 			$class = $class . '_link';
 			// build link
-			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param2 . '"> ' . $param1 . '</a>';
+			$content .= '<a class="' . self::plugin_title . ' ' . $class . ' fancybox.iframe" href="' . $param2 . '" title="' . $param3 . '"> ' . $param1 . '</a>';
 		} else {
 			return $this->throwError($this->cms_lang->getLanguageValue('error_param_type'));
 		}
