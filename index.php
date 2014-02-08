@@ -3,7 +3,7 @@
 /**
  * Plugin:   fancyBox
  * @author:  HPdesigner (kontakt[at]devmount[dot]de)
- * @version: v0.1.2014-02-04
+ * @version: v0.2.2014-02-07
  * @license: GPL v3
  * @see:     "For I know the plans I have for you" declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."
  *           - The Bible
@@ -22,14 +22,14 @@ class fancyBox extends Plugin {
 	const plugin_author = 'HPdesigner';
 	const plugin_docu = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
 	const plugin_title = 'fancyBox';
-	const plugin_version = 'v0.1.2014-02-04';
+	const plugin_version = 'v0.2.2014-02-07';
 	const mozilo_version = '2.0';
 	private $plugin_tags = array(
 		'image' => '{fancyBox|image|<gallery>|<file>|<remote>}',
 		'inline' => '{fancyBox|inline|<text>|<content>|<title>}',
 		'link' => '{fancyBox|link|<text>|<url>|<title>}',
 	);
-	
+
 	// set configuration elements, their default values and their configuration parameters
 	// element => default, wrap (# -> key, | -> value), type, maxlength/descriptions, size/multiselect, regex
 	private $confdefault = array(
@@ -83,7 +83,7 @@ class fancyBox extends Plugin {
 		$this->gallery = new GalleryClass();
 		$this->gallery->initial_Galleries(false,false,false,true);
 
-		$this->cms_lang = new Language(PLUGIN_DIR_REL . 'fancyBox/lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
+		$this->cms_lang = new Language($this->PLUGIN_SELF_DIR . 'lang/cms_language_' . $CMS_CONF->get('cmslanguage') . '.txt');
 
 		// get params
 		list($param_typ,$param1,$param2,$param3) = $this->makeUserParaArray($value,false,"|");
