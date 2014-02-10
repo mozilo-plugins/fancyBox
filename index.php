@@ -15,7 +15,7 @@
 
 class fancyBox extends Plugin {
 
-	public $admin_lang;
+	private $admin_lang;
 	private $cms_lang;
 	var $gallery;
 
@@ -280,16 +280,16 @@ class fancyBox extends Plugin {
 				. $this->admin_lang->getLanguageValue('admin_header',self::plugin_title)
 				. '</span><a href="' . self::plugin_docu . '" target="_blank"><img style="float:right;" src="http://media.devmount.de/logo_pluginconf.png" /></a></div>
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_rgba') . '</div>
 				{backgroundred_text} {backgroundred_description} &nbsp; &nbsp; {backgroundgreen_text} {backgroundgreen_description} &nbsp; &nbsp; {backgroundblue_text} {backgroundblue_description} &nbsp; &nbsp; {backgroundalpha_text} {backgroundalpha_description}
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_spacing') . '</div>
 				<div style="margin-bottom:5px;">{padding_text} {padding_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['margin'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{margin_text} {margin_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['padding'][0] .']</span></div>
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_dimension') . '</div>
 				<div style="width:24%;display:inline-block;vertical-align:top;">
 					<div style="margin-bottom:5px;">{width_text} {width_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['width'][0] .']</span></div>
@@ -307,43 +307,43 @@ class fancyBox extends Plugin {
 					<div style="margin-bottom:5px;">{thumbwidth_text} {thumbwidth_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['thumbwidth'][0] .']</span></div>
 				</div>
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_size_position') . '</div>
 				<div style="margin-bottom:5px;">{autosize_checkbox} {autosize_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['autosize'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{autoresize_checkbox} {autoresize_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['autoresize'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{autocenter_checkbox} {autocenter_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['autocenter'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{fittoview_checkbox} {fittoview_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['fittoview'][0] .']</span></div>
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_scrollbar') . '</div>
 				<div style="width:32%;display:inline-block;margin-right:5px;">{scrolling_select}</div> {scrolling_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['scrolling'][0] .']</span>
 			</li>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_cssclass') . '</div>
 				<div style="width:32%;display:inline-block;margin-right:5px;">{wrapcss_text}</div> {wrapcss_description}
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_navigation') . '</div>
 				<div style="margin-bottom:5px;">{arrows_checkbox} {arrows_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['arrows'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{closebtn_checkbox} {closebtn_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['closebtn'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{closeclick_checkbox} {closeclick_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['closeclick'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{nextclick_checkbox} {nextclick_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['nextclick'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{mousewheel_checkbox} {mousewheel_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['mousewheel'][0] .']</span></div>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_title') . '</div>
 				<div style="width:32%;display:inline-block;margin-right:5px;">{titlepos_select}</div> {titlepos_description}
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_slides') . '</div>
 				<div style="margin-bottom:5px;">{autoplay_checkbox} {autoplay_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['autoplay'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{loop_checkbox} {loop_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['loop'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{playspeed_text} {playspeed_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['playspeed'][0] .']</span></div>
 				<div style="margin-bottom:5px;">{preload_text} {preload_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['preload'][0] .']</span></div>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_animation') . '</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{openeffect_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['openeffect'][0] .']</span> {openeffect_select}</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{closeeffect_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['closeeffect'][0] .']</span> {closeeffect_select}</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{nexteffect_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['nexteffect'][0] .']</span> {nexteffect_select}</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{preveffect_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['preveffect'][0] .']</span> {preveffect_select}</div>
-			<li class="mo-in-ul-li mo-inline ui-widget-content ui-corner-all ui-helper-clearfix" style="' . $css_admin_li . '">
+			<li class="mo-in-ul-li ui-widget-content" style="' . $css_admin_li . '">
 				<div style="' . $css_admin_subheader . '">' . $this->admin_lang->getLanguageValue('admin_duration') . '</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{openspeed_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['openspeed'][0] .']</span><br />{openspeed_text}</div>
 				<div style="width:15%;display:inline-block;vertical-align:top;padding-right:10px;">{closespeed_description} <span style="' . $css_admin_default .'">[' . $this->confdefault['closespeed'][0] .']</span><br />{closespeed_text}</div>
