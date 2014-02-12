@@ -1,37 +1,37 @@
 /*
-	fancyBox CSS styles
+    fancyBox CSS styles
 */
 
 /* thmubs */
 .fancyBox img {
-	margin: 10px 10px 0 0;
+    margin: 10px 10px 0 0;
 }
 
 /* border color */
 .fancybox-skin {
-	background: #fff;
-	border-radius: 0;
+    background: #fff;
+    border-radius: 0;
 }
 .fancybox-title .child {
-	/* border-radius: 0; */
+    /* border-radius: 0; */
 }
 
 /* error */
 .fancyBoxError {
-	display: table;
-	margin: 2px 0;
-	border: 1px solid #f66;
-	background-color: #fee;
+    display: table;
+    margin: 2px 0;
+    border: 1px solid #f66;
+    background-color: #fee;
 }
 .fancyBoxError div {
-	display: table-cell;
-	padding: 2px 6px;
-	color: white;
-	background-color: #f66;
-	height: inherit;
+    display: table-cell;
+    padding: 2px 6px;
+    color: white;
+    background-color: #f66;
+    height: inherit;
 }
 .fancyBoxError span {
-	display: table-cell;
-	padding: 2px 4px;
-	color: #f66;
+    display: table-cell;
+    padding: 2px 4px;
+    color: #f66;
 }
