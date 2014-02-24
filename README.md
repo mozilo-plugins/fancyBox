@@ -17,25 +17,25 @@ Installing a plugin manually requires FTP Access.
 
 ## Syntax
 ```{fancyBox|image|<gallery>|<file>|<remote>}```
-Here comes the general description of the plugin tag.
+Shows images or galleries in fancyBox.
 
-1. Parameter ```<gallery>```: Short description of parameter 1.
-2. Parameter ```<file>```: Short description of parameter 2.
-3. Parameter ```<remote>```: Short description of parameter 2.
+1. Parameter ```<gallery>```: Name of an existing gallery
+2. Parameter ```<file>```: Name of an existing file. If parameter ```<gallery>``` is set, the file has to exist in this gallery. Otherwise the given file will be taken from the moziloCMS filelist and has to be set with category, e.g. ```@=category:filename.jpg=@```
+3. Parameter ```<remote>```: Optional. Text to display instead of thumbnail image.
 
 ```{fancyBox|inline|<text>|<content>|<title>}```
-Here comes the general description of the plugin tag.
+Shows inline content like text, html or moziloCMS syntax in fancyBox.
 
-1. Parameter ```<text>```: Short description of parameter 1.
-2. Parameter ```<content>```: Short description of parameter 2.
-3. Parameter ```<title>```: Short description of parameter 2.
+1. Parameter ```<text>```: Text to link (moziloCMS syntax is possible).
+2. Parameter ```<content>```: Content to display in fancyBox.
+3. Parameter ```<title>```: Optional. Title for fancyBox.
 
 ```{fancyBox|link|<text>|<url>|<title>}```
-Here comes the general description of the plugin tag.
+Shows linked content in fancyBox.
 
-1. Parameter ```<text>```: Short description of parameter 1.
-2. Parameter ```<url>```: Short description of parameter 2.
-3. Parameter ```<title>```: Short description of parameter 2.
+1. Parameter ```<text>```: Text to link (moziloCMS syntax is possible).
+2. Parameter ```<url>```: Link url (with http://).
+3. Parameter ```<title>```: Optional. Title for fancyBox.
 
 ## License
 This Plugin is distributed under *GNU General Public License, Version 3* (see LICENSE).
