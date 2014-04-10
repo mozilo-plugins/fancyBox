@@ -3,7 +3,7 @@
 /**
  * moziloCMS Plugin: fancyBox
  *
- * The fancyBox plugin offers a nice and elegant way to add zooming 
+ * The fancyBox plugin offers a nice and elegant way to add zooming
  * functionality for images, inline, linked and html content.
  *
  * PHP version 5
@@ -16,7 +16,7 @@
  * @link     https://github.com/devmount/fancyBox
  * @link     http://devmount.de/Develop/Mozilo%20Plugins/fancyBox.html
  * @see:     "For I know the plans I have for you" declares the LORD,
- *           "plans to prosper you and not to harm you, plans to give you hope 
+ *           "plans to prosper you and not to harm you, plans to give you hope
  *           and a future."
  *           - The Bible
  *
@@ -41,14 +41,13 @@ if (!defined('IS_CMS')) {
  */
 class fancyBox extends Plugin
 {
-
     private $_admin_lang;
     private $_cms_lang;
     var $gallery;
 
     const PLUGIN_AUTHOR = 'HPdesigner';
     const PLUGIN_DOCU
-        = 'http://www.devmount.de/Develop/Mozilo%20Plugins/fancyBox.html';
+        = 'http://www.devmount.de/Develop/moziloCMS/Plugins/fancyBox.html';
     const PLUGIN_TITLE = 'fancyBox';
     const PLUGIN_VERSION = 'v0.2.2014-02-07';
     const MOZILO_VERSION = '2.0';
@@ -63,7 +62,7 @@ class fancyBox extends Plugin
     /**
      * set configuration elements, their default values and their configuration
      * parameters
-     * 
+     *
      * @var array $_confdefault
      *      text     => default, type, maxlength, size, regex
      *      textarea => default, type, cols, rows, regex
@@ -360,9 +359,9 @@ class fancyBox extends Plugin
 
     /**
      * creates plugin content
-     * 
+     *
      * @param string $value Parameter divided by '|'
-     * 
+     *
      * @return string HTML output
      */
     function getContent($value)
@@ -498,7 +497,7 @@ class fancyBox extends Plugin
 
                 // build remote link and hide gallery
                 if ($is_remote) {
-                    $content 
+                    $content
                         .= '<a href="'
                         . $this->gallery->get_ImageSrc($param1, $images[0], false)
                         . '" rel="' . $param1 . '" class="' . $class . '">'
@@ -609,7 +608,7 @@ class fancyBox extends Plugin
             $class = $class . '_inline';
             $id = rand();
             // build inline content
-            $content 
+            $content
                 .= '<div id="' . $id . '" style="display:none;">'
                 . $param2
                 . '</div>';
@@ -641,7 +640,7 @@ class fancyBox extends Plugin
 
         // attach fancyBox
         $fancyjs = '<!-- initialize fancyBox plugin: --> ';
-        $fancyjs 
+        $fancyjs
             .= '<script type="text/javascript"> $(document).ready(function() { $(".'
             . $class
             . '").fancybox({';
@@ -655,7 +654,7 @@ class fancyBox extends Plugin
             error : \'<p class="fancybox-error">'
             . $this->_cms_lang->getLanguageValue('fancy_error')
             . '</p>\',
-            closeBtn : \'<a title="' 
+            closeBtn : \'<a title="'
             . $this->_cms_lang->getLanguageValue('fancy_close')
             . '" class="fancybox-item fancybox-close" href="javascript:;"></a>\',
             next : \'<a title="'
@@ -677,7 +676,7 @@ class fancyBox extends Plugin
 
     /**
      * sets backend configuration elements and template
-     * 
+     *
      * @return Array configuration
      */
     function getConfig()
@@ -688,7 +687,7 @@ class fancyBox extends Plugin
         foreach ($this->_confdefault as $key => $value) {
             // handle each form type
             switch ($value[2]) {
-            case 'text': 
+            case 'text':
                 $config[$key] = $this->confText(
                     $this->_admin_lang->getLanguageValue('config_' . $key),
                     $value[3],
@@ -699,12 +698,12 @@ class fancyBox extends Plugin
                     )
                 );
                 break;
-            case 'check': 
+            case 'check':
                 $config[$key] = $this->confCheck(
                     $this->_admin_lang->getLanguageValue('config_' . $key)
                 );
                 break;
-            case 'select': 
+            case 'select':
                 $descriptions = array();
                 foreach ($value[3] as $desc) {
                     $descriptions[$desc] = $this->_admin_lang->getLanguageValue(
@@ -1021,9 +1020,9 @@ class fancyBox extends Plugin
     }
 
     /**
-     * sets default backend configuration elements, if no plugin.conf.php is 
+     * sets default backend configuration elements, if no plugin.conf.php is
      * created yet
-     * 
+     *
      * @return Array configuration
      */
     function getDefaultSettings()
@@ -1037,7 +1036,7 @@ class fancyBox extends Plugin
 
     /**
      * sets backend plugin information
-     * 
+     *
      * @return Array information
      */
     function getInfo()
@@ -1059,7 +1058,7 @@ class fancyBox extends Plugin
         $info = array(
             '<b>' . self::PLUGIN_TITLE . '</b> ' . self::PLUGIN_VERSION,
             self::MOZILO_VERSION,
-            $this->_admin_lang->getLanguageValue('description'), 
+            $this->_admin_lang->getLanguageValue('description'),
             self::PLUGIN_AUTHOR,
             self::PLUGIN_DOCU,
             $tags
@@ -1070,14 +1069,14 @@ class fancyBox extends Plugin
 
     /**
      * creates an html image tag
-     * 
+     *
      * @param string $class attribute
      * @param string $rel   attribute
      * @param string $href  attribute
      * @param string $src   attribute
      * @param string $title attribute
      * @param string $width attribute
-     * 
+     *
      * @return string        html image tag
      */
     protected function buildImgTag($class, $rel, $href, $src, $title='', $width='')
@@ -1101,9 +1100,9 @@ class fancyBox extends Plugin
 
     /**
      * creates configuration for checkboxes
-     * 
+     *
      * @param string $description Label
-     * 
+     *
      * @return Array  Configuration
      */
     protected function confCheck($description)
@@ -1117,13 +1116,13 @@ class fancyBox extends Plugin
 
     /**
      * creates configuration for text fields
-     * 
+     *
      * @param string $description Label
      * @param string $maxlength   Maximum number of characters
      * @param string $size        Size
      * @param string $regex       Regular expression for allowed input
      * @param string $regex_error Wrong input error message
-     * 
+     *
      * @return Array  Configuration
      */
     protected function confText(
@@ -1156,11 +1155,11 @@ class fancyBox extends Plugin
 
     /**
      * creates configuration for select fields
-     * 
+     *
      * @param string  $description  Label
      * @param string  $descriptions Array Single item labels
      * @param boolean $multiple     Enable multiple item selection
-     * 
+     *
      * @return Array   Configuration
      */
     protected function confSelect($description, $descriptions, $multiple = false)
@@ -1176,11 +1175,11 @@ class fancyBox extends Plugin
 
     /**
      * inserts configuration key and value into a wraper text
-     * 
+     *
      * @param string $key   configuration id
      * @param string $value configuration value
      * @param string $wrap  wrapper text
-     * 
+     *
      * @return string        wrapped text with content
      */
     protected function wrap($key, $value, $wrap)
@@ -1191,9 +1190,9 @@ class fancyBox extends Plugin
 
     /**
      * throws styled error message
-     * 
+     *
      * @param string $text Content of error message
-     * 
+     *
      * @return string HTML content
      */
     protected function throwError($text)
