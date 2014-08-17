@@ -38,7 +38,7 @@ Shows linked content in fancyBox.
 3. Parameter ```<title>```: Optional. Title for fancyBox.
 
 ## License
-This Plugin is distributed under *GNU General Public License, Version 3* (see LICENSE) or, at your choice, any further version.
+This Plugin is distributed under *Creative Commons Attribution-NonCommercial 3.0* (see LICENSE) and is free to use only for non-comercial purposes.
 
 ## Documentation
 A detailed documentation and demo can be found on DEVMOUNT's website:

@@ -11,7 +11,7 @@
  * @category PHP
  * @package  PHP_MoziloPlugins
  * @author   HPdesigner <kontakt@devmount.de>
- * @license  GPL v3+
+ * @license  CC BY-NC 3.0
  * @version  GIT: v0.2.2014-02-07
  * @link     https://github.com/devmount/fancyBox
  * @link     http://devmount.de/Develop/moziloCMS/Plugins/fancyBox.html
@@ -36,7 +36,7 @@ if (!defined('IS_CMS')) {
  * @category PHP
  * @package  PHP_MoziloPlugins
  * @author   HPdesigner <kontakt@devmount.de>
- * @license  GPL v3+
+ * @license  CC BY-NC 3.0
  * @link     https://github.com/devmount/fancyBox
  */
 class fancyBox extends Plugin
