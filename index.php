@@ -12,7 +12,7 @@
  * @package  PHP_MoziloPlugins
  * @author   HPdesigner <kontakt@devmount.de>
  * @license  CC BY-NC 3.0
- * @version  GIT: v0.2.2014-02-07
+ * @version  GIT: v0.3.2014-08-17
  * @link     https://github.com/devmount/fancyBox
  * @link     http://devmount.de/Develop/moziloCMS/Plugins/fancyBox.html
  * @see:     "For I know the plans I have for you" declares the LORD,
@@ -49,7 +49,7 @@ class fancyBox extends Plugin
     const PLUGIN_DOCU
         = 'http://www.devmount.de/Develop/moziloCMS/Plugins/fancyBox.html';
     const PLUGIN_TITLE = 'fancyBox';
-    const PLUGIN_VERSION = 'v0.2.2014-02-07';
+    const PLUGIN_VERSION = 'v0.3.2014-08-17';
     const MOZILO_VERSION = '2.0';
     private $_plugin_tags = array(
         'image' => '{fancyBox|image|<gallery>|<file>|<remote>}',
