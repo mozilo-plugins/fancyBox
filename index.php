@@ -10,7 +10,7 @@
  *
  * @category PHP
  * @package  PHP_MoziloPlugins
- * @author   HPdesigner <kontakt@devmount.de>
+ * @author   DEVMOUNT <mail@devmount.de>
  * @license  CC BY-NC 3.0
  * @version  GIT: v0.3.2014-08-17
  * @link     https://github.com/devmount/fancyBox
@@ -35,7 +35,7 @@ if (!defined('IS_CMS')) {
  *
  * @category PHP
  * @package  PHP_MoziloPlugins
- * @author   HPdesigner <kontakt@devmount.de>
+ * @author   DEVMOUNT <mail@devmount.de>
  * @license  CC BY-NC 3.0
  * @link     https://github.com/devmount/fancyBox
  */
@@ -45,12 +45,13 @@ class fancyBox extends Plugin
     private $_cms_lang;
     var $gallery;
 
-    const PLUGIN_AUTHOR = 'HPdesigner';
-    const PLUGIN_DOCU
-        = 'http://www.devmount.de/Develop/moziloCMS/Plugins/fancyBox.html';
+    const PLUGIN_AUTHOR = 'DEVMOUNT';
     const PLUGIN_TITLE = 'fancyBox';
     const PLUGIN_VERSION = 'v0.3.2014-08-17';
     const MOZILO_VERSION = '2.0';
+    const PLUGIN_DOCU
+        = 'http://www.devmount.de/Develop/moziloCMS/Plugins/fancyBox.html';
+
     private $_plugin_tags = array(
         'image' => '{fancyBox|image|<gallery>|<file>|<remote>}',
         'inline' => '{fancyBox|inline|<text>|<content>|<title>}',
@@ -1060,7 +1061,11 @@ class fancyBox extends Plugin
             self::MOZILO_VERSION,
             $this->_admin_lang->getLanguageValue('description'),
             self::PLUGIN_AUTHOR,
-            self::PLUGIN_DOCU,
+            array(
+                self::PLUGIN_DOCU,
+                self::PLUGIN_TITLE . ' '
+                . $this->_admin_lang->getLanguageValue('on_devmount')
+            ),
             $tags
         );
 

@@ -2,6 +2,7 @@ tag_image	= Shows pictures or galleries in fancyBox
 tag_inline	= Shows inline content (e.g. text or moziloCMS tags) in fancyBox
 tag_link	= Shows linked content in fancyBox
 description	= The fancyBox plugin offers a nice and elegant way to add zooming functionality for images, inline, linked and html content.<br /><br /><span style='font-weight:bold'>Use:</span><br /><span style='font-family:monospace;margin:0 3px; background-color:#eee;border:1px dotted #aaa;line-height:20px;'>{fancyBox|image|&lt;gallery&gt;|&lt;file&gt;|&lt;remote&gt;}</span> Shows pictures or galleries in fancyBox<br /><span style='font-family:monospace;margin:3px 3px; background-color:#eee;border:1px dotted #aaa;line-height:20px;'>{fancyBox|inline|&lt;text&gt;|&lt;content&gt;|&lt;title&gt;}</span> Shows inline content (e.g. text or moziloCMS tags) in fancyBox<br /><span style='font-family:monospace;margin:3px 3px; background-color:#eee;border:1px dotted #aaa;line-height:20px;'>{fancyBox|link|&lt;text&gt;|&lt;url&gt;|&lt;title&gt;}</span> Shows linked content in fancyBox<br /><br /><span style='font-weight:bold'>Documentation:</span><br />A detailed documentation can be found on <span style="font-style:italic;">www.devmount.de </span> (link above).
+on_devmount                     = on devmount.de
 config_backgroundred			= R
 config_backgroundred_error		= Please enter a number between 0 and 255!
 config_backgroundgreen 			= G
