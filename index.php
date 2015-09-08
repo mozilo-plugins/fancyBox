@@ -13,7 +13,7 @@
  * @author   DEVMOUNT <mail@devmount.de>
  * @license  CC BY-NC 3.0
  * @version  GIT: v0.3.2014-08-17
- * @link     https://github.com/devmount/fancyBox
+ * @link     https://github.com/devmount-mozilo/fancyBox
  * @link     http://devmount.de/Develop/moziloCMS/Plugins/fancyBox.html
  * @see:     "For I know the plans I have for you" declares the LORD,
  *           "plans to prosper you and not to harm you, plans to give you hope
@@ -37,7 +37,7 @@ if (!defined('IS_CMS')) {
  * @package  PHP_MoziloPlugins
  * @author   DEVMOUNT <mail@devmount.de>
  * @license  CC BY-NC 3.0
- * @link     https://github.com/devmount/fancyBox
+ * @link     https://github.com/devmount-mozilo/fancyBox
  */
 class fancyBox extends Plugin
 {
