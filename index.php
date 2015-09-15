@@ -382,9 +382,14 @@ class fancyBox extends Plugin
             . '.txt'
         );
         // get params
-        list($param_typ, $param1, $param2, $param3)
-            = $this->makeUserParaArray($value, false, "|");
-
+        // list($param_typ, $param1, $param2, $param3)
+        //     = $this->makeUserParaArray($value, false, "|");
+        $params = $this->makeUserParaArray($value, false, "|");
+        $param_typ = array_key_exists(0, $params) ? $params[0] : '';
+        $param1 = array_key_exists(1, $params) ? $params[1] : '';
+        $param2 = array_key_exists(2, $params) ? $params[2] : '';
+        $param3 = array_key_exists(3, $params) ? $params[3] : '';
+        
         // get conf and set default
         $conf = array();
         foreach ($this->_confdefault as $elem => $default) {
