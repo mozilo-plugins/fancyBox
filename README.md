@@ -47,5 +47,5 @@ Shows linked content in fancyBox.
 This Plugin is distributed under *Creative Commons Attribution-NonCommercial 3.0* (see LICENSE) and is free to use only for non-comercial purposes.
 
 ## Documentation
-A detailed documentation and demo can be found here:
-http://t.devmount.de/Develop/moziloCMS/Plugins/fancyBox.html
+A detailed documentation and demo can be found here:  
+https://github.com/devmount-mozilo/fancyBox/wiki/Dokumentation [german]
